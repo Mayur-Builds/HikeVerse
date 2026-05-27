@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 50px;
+    background: black;
+    color: white;
+}
+
+ul{
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.hero{
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: lightgreen;
+}
+
+.hero h2{
+    font-size: 50px;
+}
+
+button{
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
