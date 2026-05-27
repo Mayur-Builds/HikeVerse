@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HikeVerse</title>
+
     <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <!-- Navbar -->
 
     <nav>
         <h1>HikeVerse</h1>
@@ -14,18 +22,67 @@
         <ul>
             <li>Home</li>
             <li>Treks</li>
+            <li>Explore</li>
             <li>About</li>
             <li>Login</li>
         </ul>
     </nav>
 
-    <section class="hero">
-        <h2>Explore The Mountains</h2>
-        <p>Your adventure starts here.</p>
+    <!-- Hero Section -->
 
-        <button>Explore Treks</button>
+    <section class="hero">
+
+        <div class="overlay"></div>
+
+        <div class="hero-content">
+            <h2>Explore The Mountains</h2>
+
+            <p>
+                Discover breathtaking trekking adventures around the world.
+            </p>
+
+            <button>Start Exploring</button>
+        </div>
+
+    </section>
+
+    <!-- Trek Cards Section -->
+
+    <section class="treks">
+
+        <h2>Popular Treks</h2>
+
+        <div class="card-container">
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop" alt="Mountain">
+
+                <h3>Himalayan Trek</h3>
+
+                <p>Experience snow mountains and breathtaking views.</p>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Forest">
+
+                <h3>Forest Adventure</h3>
+
+                <p>Walk through deep forests and natural trails.</p>
+            </div>
+
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop" alt="Camping">
+
+                <h3>Camping Trek</h3>
+
+                <p>Enjoy camping under the stars with friends.</p>
+            </div>
+
+        </div>
+
     </section>
 
 <script src="script.js"></script>
+
 </body>
 </html>
