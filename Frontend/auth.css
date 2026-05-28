@@ -1,0 +1,101 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1400&auto=format&fit=crop');
+
+    background-size: cover;
+    background-position: center;
+}
+
+.auth-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-form{
+    width: 400px;
+
+    background: rgba(255,255,255,0.1);
+
+    backdrop-filter: blur(15px);
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form h2{
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 35px;
+}
+
+.auth-form p{
+    text-align: center;
+    margin-bottom: 30px;
+    color: lightgray;
+}
+
+.auth-form input{
+    margin-bottom: 20px;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 16px;
+}
+
+.auth-form button{
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: lightgreen;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.auth-form button:hover{
+    background: white;
+    transform: scale(1.03);
+}
+
+.auth-form span{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.auth-form a{
+    color: lightgreen;
+    text-decoration: none;
+}
