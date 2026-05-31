@@ -173,3 +173,24 @@ async function loadTrekDetails() {
     document.getElementById("description").innerText =
         trek.description;
 }
+
+async function deleteTrek() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const confirmDelete =
+        confirm("Are you sure you want to delete this trek?");
+
+    if (!confirmDelete) return;
+
+    const response =
+        await fetch(`http://localhost:5000/trek/${trekId}`, {
+            method: "DELETE"
+        });
+
+    const data = await response.text();
+
+    alert(data);
+
+    window.location.href = "treks.html";
+}

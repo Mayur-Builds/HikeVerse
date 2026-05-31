@@ -138,6 +138,23 @@ app.get("/trek/:id", async (req, res) => {
     }
 
 });
+
+app.delete("/trek/:id", async (req, res) => {
+
+    try {
+
+        await Trek.findByIdAndDelete(req.params.id);
+
+        res.send("Trek Deleted Successfully 🗑️");
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
