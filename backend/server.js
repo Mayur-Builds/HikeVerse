@@ -155,6 +155,37 @@ app.delete("/trek/:id", async (req, res) => {
     }
 
 });
+
+app.put("/trek/:id", async (req, res) => {
+
+    try {
+
+        const {
+            trekName,
+            location,
+            difficulty,
+            description,
+            imageUrl
+        } = req.body;
+
+        await Trek.findByIdAndUpdate(req.params.id, {
+            trekName,
+            location,
+            difficulty,
+            description,
+            imageUrl
+        });
+
+        res.send("Trek Updated Successfully ✏️");
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

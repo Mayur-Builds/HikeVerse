@@ -194,3 +194,54 @@ async function deleteTrek() {
 
     window.location.href = "treks.html";
 }
+function goToEditTrek() {
+    window.location.href = "edit-trek.html";
+}
+
+async function loadEditTrek() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const response =
+        await fetch(`http://localhost:5000/trek/${trekId}`);
+
+    const trek = await response.json();
+
+    document.getElementById("trekName").value = trek.trekName;
+    document.getElementById("location").value = trek.location;
+    document.getElementById("difficulty").value = trek.difficulty;
+    document.getElementById("description").value = trek.description;
+    document.getElementById("imageUrl").value = trek.imageUrl;
+}
+
+async function updateTrek() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const trekName = document.getElementById("trekName").value;
+    const location = document.getElementById("location").value;
+    const difficulty = document.getElementById("difficulty").value;
+    const description = document.getElementById("description").value;
+    const imageUrl = document.getElementById("imageUrl").value;
+
+    const response =
+        await fetch(`http://localhost:5000/trek/${trekId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                trekName,
+                location,
+                difficulty,
+                description,
+                imageUrl
+            })
+        });
+
+    const data = await response.text();
+
+    alert(data);
+
+    window.location.href = "treks.html";
+}
