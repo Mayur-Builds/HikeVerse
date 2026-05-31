@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
@@ -10,9 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(
-  "mongodb://mayur:MAYURMAYUR@ac-kaizhuq-shard-00-00.awwvtrw.mongodb.net:27017,ac-kaizhuq-shard-00-01.awwvtrw.mongodb.net:27017,ac-kaizhuq-shard-00-02.awwvtrw.mongodb.net:27017/?ssl=true&replicaSet=atlas-kfq1cx-shard-0&authSource=admin&appName=hikeverseDB"
-)
+mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected 🚀"))
 .catch((err) => {
     console.log("MongoDB Error:");
