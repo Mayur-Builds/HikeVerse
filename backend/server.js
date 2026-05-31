@@ -1,8 +1,13 @@
 const mongoose = require("mongoose");
 const express = require("express");
+const cors = require("cors");
+
 const User = require("./models/User");
+const Trek = require("./models/Trek");
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 mongoose.connect(
@@ -13,12 +18,15 @@ mongoose.connect(
     console.log("MongoDB Error:");
     console.error(err);
 });
+
 const PORT = 5000;
 
+// Home Route
 app.get("/", (req, res) => {
     res.send("HikeVerse Backend Running 🚀");
 });
 
+// Signup Route
 app.post("/signup", async (req, res) => {
 
     try {
@@ -44,10 +52,7 @@ app.post("/signup", async (req, res) => {
 
 });
 
-    
-
-
-
+// Login Route
 app.post("/login", async (req, res) => {
 
     try {
@@ -75,6 +80,50 @@ app.post("/login", async (req, res) => {
 
 });
 
+// Add Trek Route
+app.post("/add-trek", async (req, res) => {
+
+    try {
+
+        const {
+            trekName,
+            location,
+            difficulty,
+            description,
+            imageUrl
+        } = req.body;
+
+        const newTrek = new Trek({
+            trekName,
+            location,
+            difficulty,
+            description,
+            imageUrl
+        });
+
+        await newTrek.save();
+
+        res.send("Trek Added Successfully 🏔️");
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+app.get("/treks", async (req, res) => {
+    try {
+        const treks = await Trek.find();
+        res.json(treks);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error");
+    }
+});
+
+// Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HikeVerse Dashboard</title>
+</head>
+<body>
+<a href="add-trek.html">
+    <button>Add Trek</button>
+</a>
+
+<a href="treks.html">
+    <button>View Treks</button>
+</a>
+    <h1 id="welcome"></h1>
+
+    <button onclick="logout()">Logout</button>
+
+    <script>
+
+        const user = localStorage.getItem("loggedInUser");
+        if (!user) {
+    window.location.href = "login.html";
+}
+
+        document.getElementById("welcome").innerText =
+        "Welcome " + user + " 🚀";
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "login.html";
+        }
+
+    </script>
+
+</body>
+</html>
