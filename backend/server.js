@@ -122,7 +122,22 @@ app.get("/treks", async (req, res) => {
         res.status(500).send("Error");
     }
 });
+app.get("/trek/:id", async (req, res) => {
 
+    try {
+
+        const trek = await Trek.findById(req.params.id);
+
+        res.json(trek);
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

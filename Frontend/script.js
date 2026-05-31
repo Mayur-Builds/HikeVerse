@@ -100,18 +100,29 @@ async function loadTreks() {
 
     treks.forEach((trek) => {
         container.innerHTML += `
-           <div class="trek-card">
-    <img src="${trek.imageUrl}" alt="${trek.trekName}">
-    <div class="trek-card-content">
-        <h2>${trek.trekName}</h2>
-        <p><b>Location:</b> ${trek.location}</p>
-        <p><b>Difficulty:</b> ${trek.difficulty}</p>
-        <p>${trek.description}</p>
-    </div>
-</div>
+            <div class="trek-card" onclick="openTrek('${trek._id}')">
+
+                <img src="${trek.imageUrl}" alt="${trek.trekName}">
+
+                <div class="trek-card-content">
+                    <h2>${trek.trekName}</h2>
+                    <p><b>Location:</b> ${trek.location}</p>
+                    <p><b>Difficulty:</b> ${trek.difficulty}</p>
+                    <p>${trek.description}</p>
+                </div>
+
+            </div>
         `;
     });
 }
+
+
+function openTrek(id) {
+    localStorage.setItem("selectedTrek", id);
+    window.location.href = "trek-details.html";
+}
+
+
 function searchTreks() {
 
     const input =
@@ -137,4 +148,28 @@ function searchTreks() {
 
     });
 
+}
+async function loadTrekDetails() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const response =
+        await fetch(`http://localhost:5000/trek/${trekId}`);
+
+    const trek = await response.json();
+
+    document.getElementById("trekName").innerText =
+        trek.trekName;
+
+    document.getElementById("trekImage").src =
+        trek.imageUrl;
+
+    document.getElementById("location").innerText =
+        "Location: " + trek.location;
+
+    document.getElementById("difficulty").innerText =
+        "Difficulty: " + trek.difficulty;
+
+    document.getElementById("description").innerText =
+        trek.description;
 }
