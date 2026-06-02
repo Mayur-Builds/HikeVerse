@@ -5,7 +5,14 @@ const trekSchema = new mongoose.Schema({
     location: String,
     difficulty: String,
     description: String,
-    imageUrl: String
+    imageUrl: String,
+
+    distance: String,
+    duration: String,
+    bestSeason: String,
+    thingsToCarry: String,
+    emergencyContact: String,
+    mapLink: String
 });
 
 module.exports = mongoose.model("Trek", trekSchema);

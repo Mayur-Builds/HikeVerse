@@ -2,32 +2,115 @@
 <html>
 <head>
     <title>HikeVerse Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f4f7fa;
+        }
+
+        nav{
+            background:#2c3e50;
+            color:white;
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        nav h2{
+            color:#2ecc71;
+        }
+
+        .container{
+            text-align:center;
+            margin-top:80px;
+        }
+
+        .container h1{
+            margin-bottom:30px;
+        }
+
+        .btn{
+            padding:15px 30px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            margin:10px;
+            font-size:16px;
+        }
+
+        .add-btn{
+            background:#2ecc71;
+            color:white;
+        }
+
+        .view-btn{
+            background:#3498db;
+            color:white;
+        }
+
+        .logout-btn{
+            background:#e74c3c;
+            color:white;
+        }
+
+    </style>
+
 </head>
+
 <body>
-<a href="add-trek.html">
-    <button>Add Trek</button>
-</a>
 
-<a href="treks.html">
-    <button>View Treks</button>
-</a>
-    <h1 id="welcome"></h1>
+    <nav>
+        <h2>🏔️ HikeVerse</h2>
 
-    <button onclick="logout()">Logout</button>
+        <button class="btn logout-btn" onclick="logout()">
+            Logout
+        </button>
+    </nav>
+
+    <div class="container">
+
+        <h1 id="welcome"></h1>
+
+        <a href="add-trek.html">
+            <button class="btn add-btn">
+                Add Trek
+            </button>
+        </a>
+
+        <a href="treks.html">
+            <button class="btn view-btn">
+                View Treks
+            </button>
+        </a>
+
+    </div>
 
     <script>
 
         const user = localStorage.getItem("loggedInUser");
+
         if (!user) {
-    window.location.href = "login.html";
-}
+            window.location.href = "login.html";
+        }
 
         document.getElementById("welcome").innerText =
-        "Welcome " + user + " 🚀";
+            "Welcome " + user + " 🚀";
 
         function logout() {
+
             localStorage.removeItem("loggedInUser");
+
             window.location.href = "login.html";
+
         }
 
     </script>

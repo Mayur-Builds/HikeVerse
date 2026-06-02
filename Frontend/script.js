@@ -69,6 +69,12 @@ async function addTrek() {
     const difficulty = document.getElementById("difficulty").value;
     const description = document.getElementById("description").value;
     const imageUrl = document.getElementById("imageUrl").value;
+    const distance = document.getElementById("distance").value;
+    const duration = document.getElementById("duration").value;
+    const bestSeason = document.getElementById("bestSeason").value;
+    const thingsToCarry = document.getElementById("thingsToCarry").value;
+    const emergencyContact = document.getElementById("emergencyContact").value;
+    const mapLink = document.getElementById("mapLink").value;
 
     const response = await fetch("http://localhost:5000/add-trek", {
         method: "POST",
@@ -80,7 +86,13 @@ async function addTrek() {
             location,
             difficulty,
             description,
-            imageUrl
+            imageUrl,
+            distance,
+            duration,
+bestSeason,
+thingsToCarry,
+emergencyContact,
+mapLink
         })
     });
 
@@ -172,6 +184,25 @@ async function loadTrekDetails() {
 
     document.getElementById("description").innerText =
         trek.description;
+
+
+    document.getElementById("distance").innerText =
+    "Distance: " + trek.distance;
+
+document.getElementById("duration").innerText =
+    "Duration: " + trek.duration;
+
+document.getElementById("bestSeason").innerText =
+    "Best Season: " + trek.bestSeason;
+
+document.getElementById("thingsToCarry").innerText =
+    "Things To Carry: " + trek.thingsToCarry;
+
+document.getElementById("emergencyContact").innerText =
+    "Emergency Contact: " + trek.emergencyContact;
+
+document.getElementById("mapLink").href =
+    trek.mapLink;    
 }
 
 async function deleteTrek() {
@@ -212,6 +243,12 @@ async function loadEditTrek() {
     document.getElementById("difficulty").value = trek.difficulty;
     document.getElementById("description").value = trek.description;
     document.getElementById("imageUrl").value = trek.imageUrl;
+    document.getElementById("distance").value = trek.distance;
+document.getElementById("duration").value = trek.duration;
+document.getElementById("bestSeason").value = trek.bestSeason;
+document.getElementById("thingsToCarry").value = trek.thingsToCarry;
+document.getElementById("emergencyContact").value = trek.emergencyContact;
+document.getElementById("mapLink").value = trek.mapLink;
 }
 
 async function updateTrek() {
@@ -223,6 +260,13 @@ async function updateTrek() {
     const difficulty = document.getElementById("difficulty").value;
     const description = document.getElementById("description").value;
     const imageUrl = document.getElementById("imageUrl").value;
+    const distance = document.getElementById("distance").value;
+const duration = document.getElementById("duration").value;
+const bestSeason = document.getElementById("bestSeason").value;
+const thingsToCarry = document.getElementById("thingsToCarry").value;
+const emergencyContact = document.getElementById("emergencyContact").value;
+const mapLink = document.getElementById("mapLink").value;
+
 
     const response =
         await fetch(`http://localhost:5000/trek/${trekId}`, {
@@ -235,7 +279,13 @@ async function updateTrek() {
                 location,
                 difficulty,
                 description,
-                imageUrl
+                imageUrl,
+                distance,
+duration,
+bestSeason,
+thingsToCarry,
+emergencyContact,
+mapLink
             })
         });
 

@@ -85,21 +85,33 @@ app.post("/add-trek", async (req, res) => {
 
     try {
 
-        const {
-            trekName,
-            location,
-            difficulty,
-            description,
-            imageUrl
-        } = req.body;
+     const {
+    trekName,
+    location,
+    difficulty,
+    description,
+    imageUrl,
+    distance,
+    duration,
+    bestSeason,
+    thingsToCarry,
+    emergencyContact,
+    mapLink
+} = req.body;
 
         const newTrek = new Trek({
-            trekName,
-            location,
-            difficulty,
-            description,
-            imageUrl
-        });
+    trekName,
+    location,
+    difficulty,
+    description,
+    imageUrl,
+    distance,
+    duration,
+    bestSeason,
+    thingsToCarry,
+    emergencyContact,
+    mapLink
+});
 
         await newTrek.save();
 
@@ -165,7 +177,13 @@ app.put("/trek/:id", async (req, res) => {
             location,
             difficulty,
             description,
-            imageUrl
+            imageUrl,
+            distance,
+duration,
+bestSeason,
+thingsToCarry,
+emergencyContact,
+mapLink
         } = req.body;
 
         await Trek.findByIdAndUpdate(req.params.id, {
@@ -173,7 +191,13 @@ app.put("/trek/:id", async (req, res) => {
             location,
             difficulty,
             description,
-            imageUrl
+            imageUrl,
+            distance,
+duration,
+bestSeason,
+thingsToCarry,
+emergencyContact,
+mapLink
         });
 
         res.send("Trek Updated Successfully ✏️");
@@ -187,6 +211,37 @@ app.put("/trek/:id", async (req, res) => {
 
 });
 // Start Server
+
+app.get("/weather/:location", async (req, res) => {
+    try {
+        const location = encodeURIComponent(req.params.location);
+
+        const geoResponse = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${location}`
+        );
+
+        const geoData = await geoResponse.json();
+
+        if (!geoData.results || geoData.results.length === 0) {
+            return res.send("Location not found");
+        }
+
+        const latitude = geoData.results[0].latitude;
+        const longitude = geoData.results[0].longitude;
+
+        const weatherResponse = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m,relative_humidity_2m`
+        );
+
+        const weatherData = await weatherResponse.json();
+
+        res.json(weatherData.current);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Weather Error");
+    }
+});
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
