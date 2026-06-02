@@ -7,6 +7,7 @@ const cors = require("cors");
 const User = require("./models/User");
 const Trek = require("./models/Trek");
 const Favorite = require("./models/Favorite");
+const Review = require("./models/Review");
 
 const app = express();
 
@@ -295,6 +296,54 @@ app.get("/favorites/:userEmail", async (req, res) => {
         });
 
         res.json(favorites);
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+app.post("/review", async (req, res) => {
+
+    try {
+
+        const {
+            trekId,
+            userEmail,
+            rating,
+            comment
+        } = req.body;
+
+        const newReview = new Review({
+            trekId,
+            userEmail,
+            rating,
+            comment
+        });
+
+        await newReview.save();
+
+        res.send("Review Added Successfully ⭐");
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+app.get("/reviews/:trekId", async (req, res) => {
+
+    try {
+
+        const reviews = await Review.find({
+            trekId: req.params.trekId
+        });
+
+        res.json(reviews);
 
     } catch (error) {
 

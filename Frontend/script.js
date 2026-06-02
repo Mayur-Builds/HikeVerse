@@ -204,6 +204,7 @@ document.getElementById("emergencyContact").innerText =
 document.getElementById("mapLink").href =
     trek.mapLink;   
     loadWeather(trek.location); 
+    loadReviews();
 }
 
 async function deleteTrek() {
@@ -388,4 +389,64 @@ async function loadFavorites() {
 
     });
 
+}
+async function addReview() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+    const userEmail = localStorage.getItem("loggedInUser");
+
+    const rating = document.getElementById("rating").value;
+    const comment = document.getElementById("comment").value;
+    if (rating < 1 || rating > 5) {
+    alert("Please enter a rating between 1 and 5");
+    return;
+}
+
+if (comment === "") {
+    alert("Please write a review comment");
+    return;
+}
+    const response = await fetch("http://localhost:5000/review", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            trekId,
+            userEmail,
+            rating,
+            comment
+        })
+    });
+
+    const data = await response.text();
+
+    alert(data);
+    loadReviews();
+}
+async function loadReviews() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const response =
+        await fetch(`http://localhost:5000/reviews/${trekId}`);
+
+    const reviews = await response.json();
+
+    const container =
+        document.getElementById("reviewContainer");
+
+    container.innerHTML = "";
+
+    reviews.forEach((review) => {
+
+        container.innerHTML += `
+            <div style="border:1px solid #ccc; padding:15px; margin:10px 0;">
+                <h3>⭐ ${review.rating}/5</h3>
+                <p>${review.comment}</p>
+                <small>By: ${review.userEmail}</small>
+            </div>
+        `;
+
+    });
 }
