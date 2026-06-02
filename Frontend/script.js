@@ -202,7 +202,8 @@ document.getElementById("emergencyContact").innerText =
     "Emergency Contact: " + trek.emergencyContact;
 
 document.getElementById("mapLink").href =
-    trek.mapLink;    
+    trek.mapLink;   
+    loadWeather(trek.location); 
 }
 
 async function deleteTrek() {
@@ -294,4 +295,97 @@ mapLink
     alert(data);
 
     window.location.href = "treks.html";
+}
+
+async function loadWeather(location) {
+
+    const response =
+        await fetch(`http://localhost:5000/weather/${location}`);
+
+    const weather = await response.json();
+
+    document.getElementById("temperature").innerText =
+        "Temperature: " + weather.temperature_2m + "°C";
+
+    document.getElementById("windSpeed").innerText =
+        "Wind Speed: " + weather.wind_speed_10m + " km/h";
+
+    document.getElementById("humidity").innerText =
+        "Humidity: " + weather.relative_humidity_2m + "%";
+
+    let advice = "";
+
+    if (weather.temperature_2m > 35) {
+        advice = "⚠️ Very hot. Carry extra water and avoid afternoon trekking.";
+    } else if (weather.wind_speed_10m > 30) {
+        advice = "⚠️ Strong winds. Be careful on exposed mountain trails.";
+    } else {
+        advice = "✅ Weather looks suitable for trekking.";
+    }
+
+    document.getElementById("weatherAdvice").innerText = advice;
+}
+
+async function addToFavorite() {
+
+    const userEmail = localStorage.getItem("loggedInUser");
+    const trekId = localStorage.getItem("selectedTrek");
+
+    const response = await fetch(`http://localhost:5000/trek/${trekId}`);
+    const trek = await response.json();
+
+    const favoriteResponse = await fetch("http://localhost:5000/favorite", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userEmail,
+            trekId,
+            trekName: trek.trekName,
+            location: trek.location,
+            imageUrl: trek.imageUrl
+        })
+    });
+
+    const data = await favoriteResponse.text();
+
+    alert(data);
+}
+
+async function loadFavorites() {
+
+    const userEmail =
+        localStorage.getItem("loggedInUser");
+
+    const response =
+        await fetch(`http://localhost:5000/favorites/${userEmail}`);
+
+    const favorites = await response.json();
+
+    const container =
+        document.getElementById("favoriteContainer");
+
+    container.innerHTML = "";
+
+    favorites.forEach((favorite) => {
+
+        container.innerHTML += `
+            <div class="favorite-card">
+
+                <img src="${favorite.imageUrl}">
+
+                <div class="favorite-card-content">
+
+                    <h2>${favorite.trekName}</h2>
+
+                    <p>${favorite.location}</p>
+
+                </div>
+
+            </div>
+        `;
+
+    });
+
 }

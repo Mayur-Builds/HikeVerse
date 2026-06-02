@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const User = require("./models/User");
 const Trek = require("./models/Trek");
+const Favorite = require("./models/Favorite");
 
 const app = express();
 
@@ -210,7 +211,7 @@ mapLink
     }
 
 });
-// Start Server
+
 
 app.get("/weather/:location", async (req, res) => {
     try {
@@ -242,6 +243,69 @@ app.get("/weather/:location", async (req, res) => {
         res.status(500).send("Weather Error");
     }
 });
+
+app.post("/favorite", async (req, res) => {
+
+    try {
+
+        const {
+            userEmail,
+            trekId,
+            trekName,
+            location,
+            imageUrl
+        } = req.body;
+
+        const existingFavorite = await Favorite.findOne({
+            userEmail,
+            trekId
+        });
+
+        if (existingFavorite) {
+            return res.send("Trek already in Favorites ❤️");
+        }
+
+        const newFavorite = new Favorite({
+            userEmail,
+            trekId,
+            trekName,
+            location,
+            imageUrl
+        });
+
+        await newFavorite.save();
+
+        res.send("Trek Added to Favorites ❤️");
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+
+app.get("/favorites/:userEmail", async (req, res) => {
+
+    try {
+
+        const favorites = await Favorite.find({
+            userEmail: req.params.userEmail
+        });
+
+        res.json(favorites);
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+
+// Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
