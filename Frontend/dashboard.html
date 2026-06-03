@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="main.css">
     <title>HikeVerse Dashboard</title>
 
     <style>
@@ -68,34 +69,90 @@
 
 <body>
 
-    <nav>
+    <nav class="navbar">
         <h2>🏔️ HikeVerse</h2>
 
-        <button class="btn logout-btn" onclick="logout()">
+        <button class="btn btn-red" onclick="logout()">
             Logout
         </button>
     </nav>
 
-    <div class="container">
+    <div style="text-align:center;padding:60px 20px;">
 
         <h1 id="welcome"></h1>
 
-        <a href="add-trek.html">
-            <button class="btn add-btn">
-                Add Trek
-            </button>
-        </a>
+        <p style="margin-top:15px;font-size:18px;color:#555;">
+            Discover, Plan and Track the Best Treks in Maharashtra
+        </p>
 
-        <a href="treks.html">
-            <button class="btn view-btn">
-                View Treks
-            </button>
-        </a>
-        <a href="favorites.html">
-    <button class="btn view-btn">
-        My Favorites ❤️
-    </button>
-</a>
+        <div style="margin-top:40px;">
+
+            <a href="add-trek.html">
+                <button class="btn btn-green">
+                    Add Trek
+                </button>
+            </a>
+
+            <a href="treks.html">
+                <button class="btn btn-blue">
+                    Explore Treks
+                </button>
+            </a>
+
+            <a href="favorites.html">
+                <button class="btn btn-green">
+                    My Favorites ❤️
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <div style="
+        display:flex;
+        justify-content:center;
+        gap:30px;
+        flex-wrap:wrap;
+        padding:30px;
+    ">
+
+        <div style="
+            background:white;
+            padding:25px;
+            width:250px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 8px 20px rgba(0,0,0,0.1);
+        ">
+            <h2>🏔️ Treks</h2>
+            <p>Explore Maharashtra's Best Treks</p>
+        </div>
+
+        <div style="
+            background:white;
+            padding:25px;
+            width:250px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 8px 20px rgba(0,0,0,0.1);
+        ">
+            <h2>🌦️ Weather</h2>
+            <p>Check Trek Weather Conditions</p>
+        </div>
+
+        <div style="
+            background:white;
+            padding:25px;
+            width:250px;
+            border-radius:15px;
+            text-align:center;
+            box-shadow:0 8px 20px rgba(0,0,0,0.1);
+        ">
+            <h2>⭐ Reviews</h2>
+            <p>Read Ratings & Reviews</p>
+        </div>
+
     </div>
 
     <script>
@@ -107,7 +164,7 @@
         }
 
         document.getElementById("welcome").innerText =
-            "Welcome " + user + " 🚀";
+            "Welcome, " + user + " 👋";
 
         function logout() {
 

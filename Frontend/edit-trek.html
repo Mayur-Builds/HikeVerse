@@ -1,35 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <title>Edit Trek - HikeVerse</title>
+
+    <link rel="stylesheet" href="main.css">
+
+    <style>
+
+        body{
+            background:#f4f7fa;
+        }
+
+        nav{
+            background:#2c3e50;
+            color:white;
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        nav h2{
+            color:#2ecc71;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+        }
+
+        .form-container{
+            max-width:700px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:20px;
+            box-shadow:0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .form-container input,
+        .form-container textarea{
+            width:100%;
+            padding:14px;
+            margin:10px 0;
+            border:1px solid #ccc;
+            border-radius:10px;
+            font-size:15px;
+        }
+
+        .form-container textarea{
+            height:120px;
+            resize:none;
+        }
+
+    </style>
+
 </head>
+
 <body>
 
-    <h1>Edit Trek ✏️</h1>
+    <nav>
+        <h2>🏔️ HikeVerse</h2>
 
-    <input type="text" id="trekName" placeholder="Trek Name"><br><br>
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+    </nav>
 
-    <input type="text" id="location" placeholder="Location"><br><br>
+    <h1 class="page-title">Edit Trek ✏️</h1>
 
-    <input type="text" id="difficulty" placeholder="Difficulty"><br><br>
+    <div class="form-container">
 
-    <textarea id="description" placeholder="Description"></textarea><br><br>
+        <input type="text" id="trekName" placeholder="Trek Name">
 
-    <input type="text" id="imageUrl" placeholder="Image URL"><br><br>
+        <input type="text" id="location" placeholder="Location">
 
+        <input type="text" id="difficulty" placeholder="Difficulty">
 
-    <input type="text" id="distance" placeholder="Distance">
+        <textarea id="description" placeholder="Description"></textarea>
 
-<input type="text" id="duration" placeholder="Duration">
+        <input type="text" id="imageUrl" placeholder="Image URL">
 
-<input type="text" id="bestSeason" placeholder="Best Season">
+        <input type="text" id="distance" placeholder="Distance">
 
-<textarea id="thingsToCarry" placeholder="Things To Carry"></textarea>
+        <input type="text" id="duration" placeholder="Duration">
 
-<input type="text" id="emergencyContact" placeholder="Emergency Contact">
+        <input type="text" id="bestSeason" placeholder="Best Season">
 
-<input type="text" id="mapLink" placeholder="Google Maps Link">
-    <button onclick="updateTrek()">Update Trek</button>
+        <textarea id="thingsToCarry" placeholder="Things To Carry"></textarea>
+
+        <input type="text" id="emergencyContact" placeholder="Emergency Contact">
+
+        <input type="text" id="mapLink" placeholder="Google Maps Link">
+
+        <button class="btn btn-blue" onclick="updateTrek()">
+            Update Trek
+        </button>
+
+    </div>
 
     <script src="script.js"></script>
 

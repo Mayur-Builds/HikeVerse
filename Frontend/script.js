@@ -183,7 +183,7 @@ async function loadTrekDetails() {
         "Difficulty: " + trek.difficulty;
 
     document.getElementById("description").innerText =
-        trek.description;
+    "Description: " + trek.description;
 
 
     document.getElementById("distance").innerText =
@@ -437,9 +437,10 @@ async function loadReviews() {
         document.getElementById("reviewContainer");
 
     container.innerHTML = "";
+    let totalRating = 0;
 
     reviews.forEach((review) => {
-
+         totalRating += Number(review.rating);
         container.innerHTML += `
             <div style="border:1px solid #ccc; padding:15px; margin:10px 0;">
                 <h3>⭐ ${review.rating}/5</h3>
@@ -449,4 +450,13 @@ async function loadReviews() {
         `;
 
     });
+    if (reviews.length > 0) {
+    const average = totalRating / reviews.length;
+
+    document.getElementById("averageRating").innerText =
+        "Average Rating: ⭐ " + average.toFixed(1) + "/5 (" + reviews.length + " reviews)";
+} else {
+    document.getElementById("averageRating").innerText =
+        "No reviews yet";
+}
 }
