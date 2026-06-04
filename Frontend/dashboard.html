@@ -117,44 +117,41 @@
         padding:30px;
     ">
 
-        <div style="
-            background:white;
-            padding:25px;
-            width:250px;
-            border-radius:15px;
-            text-align:center;
-            box-shadow:0 8px 20px rgba(0,0,0,0.1);
-        ">
-            <h2>🏔️ Treks</h2>
-            <p>Explore Maharashtra's Best Treks</p>
-        </div>
+       <div style="
+    background:white;
+    padding:25px;
+    width:250px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+">
+    <h2 id="totalTreks">🏔️ Total Treks: 0</h2>
+</div>
 
-        <div style="
-            background:white;
-            padding:25px;
-            width:250px;
-            border-radius:15px;
-            text-align:center;
-            box-shadow:0 8px 20px rgba(0,0,0,0.1);
-        ">
-            <h2>🌦️ Weather</h2>
-            <p>Check Trek Weather Conditions</p>
-        </div>
+<div style="
+    background:white;
+    padding:25px;
+    width:250px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+">
+    <h2 id="totalFavorites">❤️ Favorites: 0</h2>
+</div>
 
-        <div style="
-            background:white;
-            padding:25px;
-            width:250px;
-            border-radius:15px;
-            text-align:center;
-            box-shadow:0 8px 20px rgba(0,0,0,0.1);
-        ">
-            <h2>⭐ Reviews</h2>
-            <p>Read Ratings & Reviews</p>
-        </div>
+<div style="
+    background:white;
+    padding:25px;
+    width:250px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+">
+    <h2 id="totalReviews">⭐ Reviews: 0</h2>
+</div>
 
     </div>
-
+<script src="script.js"></script>
     <script>
 
         const user = localStorage.getItem("loggedInUser");
@@ -173,6 +170,7 @@
             window.location.href = "login.html";
 
         }
+        loadStats();
 
     </script>
 

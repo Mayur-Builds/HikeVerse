@@ -120,7 +120,7 @@ async function loadTreks() {
                     <h2>${trek.trekName}</h2>
                     <p><b>Location:</b> ${trek.location}</p>
                     <p><b>Difficulty:</b> ${trek.difficulty}</p>
-                    <p>${trek.description}</p>
+                    <p>${trek.description.substring(0, 100)}...</p>
                 </div>
 
             </div>
@@ -367,24 +367,26 @@ async function loadFavorites() {
     const container =
         document.getElementById("favoriteContainer");
 
-    container.innerHTML = "";
+   container.innerHTML = "";
 
-    favorites.forEach((favorite) => {
+favorites.forEach((favorite) => {
 
-        container.innerHTML += `
-            <div class="favorite-card">
+    container.innerHTML += `
+        <div class="favorite-card"
+             onclick="openFavoriteTrek('${favorite.trekId}')"
+             style="cursor:pointer;">
 
-                <img src="${favorite.imageUrl}">
+            <img src="${favorite.imageUrl}">
 
-                <div class="favorite-card-content">
+            <div class="favorite-card-content">
 
-                    <h2>${favorite.trekName}</h2>
+                <h2>${favorite.trekName}</h2>
 
-                    <p>${favorite.location}</p>
-
-                </div>
+                <p>${favorite.location}</p>
 
             </div>
+
+        </div>
         `;
 
     });
@@ -464,3 +466,30 @@ reviews.forEach((review) => {
         "No reviews yet";
 }
 }
+function openFavoriteTrek(trekId) {
+
+    localStorage.setItem("selectedTrek", trekId);
+
+    window.location.href = "trek-details.html";
+
+}
+
+async function loadStats() {
+
+    const userEmail = localStorage.getItem("loggedInUser");
+
+    const response =
+        await fetch(`http://localhost:5000/stats/${userEmail}`);
+
+    const stats = await response.json();
+
+    document.getElementById("totalTreks").innerText =
+        "🏔️ Total Treks: " + stats.totalTreks;
+
+    document.getElementById("totalFavorites").innerText =
+        "❤️ Favorites: " + stats.totalFavorites;
+
+    document.getElementById("totalReviews").innerText =
+        "⭐ Reviews: " + stats.totalReviews;
+}
+

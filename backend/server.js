@@ -354,6 +354,33 @@ app.get("/reviews/:trekId", async (req, res) => {
 
 });
 
+app.get("/stats/:userEmail", async (req, res) => {
+
+    try {
+
+        const totalTreks = await Trek.countDocuments();
+
+        const totalFavorites = await Favorite.countDocuments({
+            userEmail: req.params.userEmail
+        });
+
+        const totalReviews = await Review.countDocuments();
+
+        res.json({
+            totalTreks,
+            totalFavorites,
+            totalReviews
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send("Error");
+
+    }
+
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
