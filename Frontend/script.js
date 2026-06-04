@@ -436,20 +436,24 @@ async function loadReviews() {
     const container =
         document.getElementById("reviewContainer");
 
-    container.innerHTML = "";
-    let totalRating = 0;
+   container.innerHTML = "";
+let totalRating = 0;
 
-    reviews.forEach((review) => {
-         totalRating += Number(review.rating);
-        container.innerHTML += `
-            <div style="border:1px solid #ccc; padding:15px; margin:10px 0;">
-                <h3>⭐ ${review.rating}/5</h3>
-                <p>${review.comment}</p>
-                <small>By: ${review.userEmail}</small>
-            </div>
-        `;
+reviews.forEach((review) => {
 
-    });
+    totalRating += Number(review.rating);
+
+    container.innerHTML += `
+        <div class="review-card">
+            <h3>⭐ ${review.rating}/5</h3>
+            <p>${review.comment}</p>
+            <small>By: ${review.userEmail}</small>
+        </div>
+    `;
+
+});
+
+    
     if (reviews.length > 0) {
     const average = totalRating / reviews.length;
 
