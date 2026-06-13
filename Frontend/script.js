@@ -1,11 +1,7 @@
 // Simple test to check JS is working
 console.log("HikeVerse JS Loaded");
 
-const button = document.querySelector("button");
 
-button.addEventListener("click", function () {
-    alert("Start Exploring HikeVerse 🚀");
-});
 
 async function loginUser() {
 
@@ -23,20 +19,22 @@ async function loginUser() {
         })
     });
 
-    const data = await response.text();
 
-    if (data === "Login Successful 🚀") {
 
-    localStorage.setItem("loggedInUser", email);
+    const data = await response.json();
 
-    window.location.href = "dashboard.html";
+    if (data.message === "Login Successful") {
 
-} else {
+        localStorage.setItem("loggedInUser", email);
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("userRole", data.role);
 
-    alert(data);
+        window.location.href = "dashboard.html";
 
-}
-}
+    } else {
+        alert(data.message || "Login failed");
+    }}
 
 
 async function signupUser() {
@@ -76,6 +74,25 @@ async function addTrek() {
     const emergencyContact = document.getElementById("emergencyContact").value;
     const mapLink = document.getElementById("mapLink").value;
 
+    // Validation
+   if (
+    !trekName.trim() ||
+    !location.trim() ||
+    !difficulty.trim() ||
+    !description.trim() ||
+    !imageUrl.trim() ||
+    !distance.trim() ||
+    !duration.trim() ||
+    !bestSeason.trim() ||
+    !thingsToCarry.trim() ||
+    !emergencyContact.trim() ||
+    !mapLink.trim()
+) {
+    alert("Please fill all fields.");
+    return;
+}
+    const role = localStorage.getItem("userRole");
+
     const response = await fetch("http://localhost:5000/add-trek", {
         method: "POST",
         headers: {
@@ -89,15 +106,15 @@ async function addTrek() {
             imageUrl,
             distance,
             duration,
-bestSeason,
-thingsToCarry,
-emergencyContact,
-mapLink
+            bestSeason,
+            thingsToCarry,
+            emergencyContact,
+            mapLink,
+            role
         })
     });
 
     const data = await response.text();
-
     alert(data);
 }
 
@@ -112,18 +129,28 @@ async function loadTreks() {
 
     treks.forEach((trek) => {
         container.innerHTML += `
-            <div class="trek-card" onclick="openTrek('${trek._id}')">
+          <div class="trek-card" onclick="openTrek('${trek._id}')">
 
-                <img src="${trek.imageUrl}" alt="${trek.trekName}">
+    <img src="${trek.imageUrl}" alt="${trek.trekName}">
 
-                <div class="trek-card-content">
-                    <h2>${trek.trekName}</h2>
-                    <p><b>Location:</b> ${trek.location}</p>
-                    <p><b>Difficulty:</b> ${trek.difficulty}</p>
-                    <p>${trek.description.substring(0, 100)}...</p>
-                </div>
+    <div class="trek-card-content">
+        <h2>${trek.trekName}</h2>
 
-            </div>
+        <p><b>Location:</b> ${trek.location}</p>
+
+        <p><b>Difficulty:</b> ${trek.difficulty}</p>
+
+        <p><b>Rating:</b> ⭐ ${trek.rating || "4.5"}</p>
+
+        <p><b>Price:</b> ₹${trek.price || "999"}</p>
+
+        <p>${trek.description.substring(0, 100)}...</p>
+
+        <button class="view-btn">View Details</button>
+
+    </div>
+
+</div>
         `;
     });
 }
@@ -208,6 +235,7 @@ document.getElementById("mapLink").href =
 }
 
 async function deleteTrek() {
+    const role = localStorage.getItem("userRole");
 
     const trekId = localStorage.getItem("selectedTrek");
 
@@ -216,10 +244,16 @@ async function deleteTrek() {
 
     if (!confirmDelete) return;
 
-    const response =
-        await fetch(`http://localhost:5000/trek/${trekId}`, {
-            method: "DELETE"
-        });
+const response =
+    await fetch(`http://localhost:5000/trek/${trekId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            role
+        })
+    });
 
     const data = await response.text();
 
@@ -268,7 +302,7 @@ const bestSeason = document.getElementById("bestSeason").value;
 const thingsToCarry = document.getElementById("thingsToCarry").value;
 const emergencyContact = document.getElementById("emergencyContact").value;
 const mapLink = document.getElementById("mapLink").value;
-
+const role = localStorage.getItem("userRole");
 
     const response =
         await fetch(`http://localhost:5000/trek/${trekId}`, {
@@ -287,7 +321,8 @@ duration,
 bestSeason,
 thingsToCarry,
 emergencyContact,
-mapLink
+mapLink,
+role
             })
         });
 
@@ -459,8 +494,8 @@ reviews.forEach((review) => {
     if (reviews.length > 0) {
     const average = totalRating / reviews.length;
 
-    document.getElementById("averageRating").innerText =
-        "Average Rating: ⭐ " + average.toFixed(1) + "/5 (" + reviews.length + " reviews)";
+    document.getElementById("averageRating").innerHTML =
+    `⭐ Average Rating: <b>${average.toFixed(1)}/5</b> (${reviews.length} reviews)`;
 } else {
     document.getElementById("averageRating").innerText =
         "No reviews yet";
@@ -492,4 +527,20 @@ async function loadStats() {
     document.getElementById("totalReviews").innerText =
         "⭐ Reviews: " + stats.totalReviews;
 }
+function checkAdminAccess() {
+
+    const role = localStorage.getItem("userRole");
+
+    if (role !== "admin") {
+
+        document.querySelectorAll(".admin-only").forEach(item => {
+            item.style.display = "none";
+        });
+
+    }
+
+}
+
+
+
 

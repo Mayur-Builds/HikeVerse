@@ -85,6 +85,7 @@
 .review-card h3{
     color:#f39c12;
     margin-bottom:8px;
+    font-size:24px;
 }
 
 .review-card p{
@@ -96,15 +97,19 @@
 
 <body>
 
-    <nav class="navbar">
-        <h2>🏔️ HikeVerse</h2>
+   <nav class="navbar">
 
-        <div>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="treks.html">Treks</a>
-            <a href="favorites.html">Favorites</a>
-        </div>
-    </nav>
+    <h2>🏔️ HikeVerse</h2>
+
+    <div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="treks.html">Treks</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+</nav>
 
     <div class="details-container">
 
@@ -165,8 +170,8 @@
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-red" onclick="deleteTrek()">Delete Trek 🗑️</button>
-            <button class="btn btn-blue" onclick="goToEditTrek()">Edit Trek ✏️</button>
+           <button class="admin-only" onclick="deleteTrek()">Delete Trek</button>
+            <button class="admin-only" onclick="goToEditTrek()">Edit Trek</button>
             <button class="btn btn-green" onclick="addToFavorite()">Save to Favorites ❤️</button>
         </div>
 
@@ -175,6 +180,7 @@
     <script src="script.js"></script>
     <script>
         loadTrekDetails();
+        checkAdminAccess();
     </script>
 
 <footer>

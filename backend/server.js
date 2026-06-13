@@ -71,16 +71,23 @@ app.post("/login", async (req, res) => {
             return res.send("Invalid Password ❌");
         }
 
-        res.send("Login Successful 🚀");
+        res.json({
+    message: "Login Successful",
+    userId: user._id,
+    username: user.username,
+    role: user.role
+});
 
     } catch (error) {
-
         console.log(error);
         res.status(500).send("Error");
-
     }
 
+
+
 });
+
+  
 
 // Add Trek Route
 app.post("/add-trek", async (req, res) => {
@@ -100,6 +107,24 @@ app.post("/add-trek", async (req, res) => {
     emergencyContact,
     mapLink
 } = req.body;
+if (req.body.role !== "admin") {
+    return res.status(403).send("Only admin can add treks");
+}
+if (
+    !trekName?.trim() ||
+    !location?.trim() ||
+    !difficulty?.trim() ||
+    !description?.trim() ||
+    !imageUrl?.trim() ||
+    !distance?.trim() ||
+    !duration?.trim() ||
+    !bestSeason?.trim() ||
+    !thingsToCarry?.trim() ||
+    !emergencyContact?.trim() ||
+    !mapLink?.trim()
+) {
+    return res.status(400).send("All fields are required");
+}
 
         const newTrek = new Trek({
     trekName,
@@ -157,6 +182,10 @@ app.delete("/trek/:id", async (req, res) => {
 
     try {
 
+        if (req.body.role !== "admin") {
+            return res.status(403).send("Only admin can delete treks");
+        }
+
         await Trek.findByIdAndDelete(req.params.id);
 
         res.send("Trek Deleted Successfully 🗑️");
@@ -173,6 +202,9 @@ app.delete("/trek/:id", async (req, res) => {
 app.put("/trek/:id", async (req, res) => {
 
     try {
+        if (req.body.role !== "admin") {
+    return res.status(403).send("Only admin can edit treks");
+}
 
         const {
             trekName,

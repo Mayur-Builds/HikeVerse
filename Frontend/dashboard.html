@@ -62,6 +62,64 @@
             background:#e74c3c;
             color:white;
         }
+        .hero{
+    text-align:center;
+    padding:70px 20px;
+    background:linear-gradient(135deg, #1f2d3d, #2ecc71);
+    color:white;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    margin-bottom:30px;
+}
+
+.stats-section{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    padding:40px 20px;
+}
+
+.stat-card{
+    background:white;
+    padding:30px;
+    width:260px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+}
+
+.feature-section{
+    padding:40px 20px;
+    text-align:center;
+}
+
+.feature-grid{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.feature-card{
+    background:white;
+    padding:30px;
+    width:280px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+}
+
+.feature-card h2{
+    margin-bottom:10px;
+}
 
     </style>
 
@@ -73,100 +131,68 @@
     <h2>🏔️ HikeVerse</h2>
 
     <div>
-
         <a href="dashboard.html">Dashboard</a>
-
         <a href="treks.html">Treks</a>
-
         <a href="favorites.html">Favorites</a>
-
         <a href="about.html">About</a>
-
         <a href="contact.html">Contact</a>
 
         <button class="btn btn-red" onclick="logout()">
             Logout
         </button>
-
     </div>
 
 </nav>
 
-    <div style="text-align:center;padding:60px 20px;">
+    <section class="hero">
+    <h1 id="welcome"></h1>
 
-        <h1 id="welcome"></h1>
+    <p>Discover, Plan and Explore the Best Treks Across Maharashtra</p>
 
-        <p style="margin-top:15px;font-size:18px;color:#555;">
-            Discover, Plan and Track the Best Treks in Maharashtra
-        </p>
+    <div>
+        <a href="treks.html"><button class="btn btn-blue">Explore Treks</button></a>
+  <a href="add-trek.html" class="admin-only">
+    <button class="btn btn-green">Add Trek</button>
+</a>
+        <a href="favorites.html"><button class="btn btn-green">My Favorites ❤️</button></a>
+    </div>
+</section>
 
-        <div style="margin-top:40px;">
+<section class="stats-section">
+    <div class="stat-card">
+        <h2 id="totalTreks">🏔️ Total Treks: 0</h2>
+    </div>
 
-            <a href="add-trek.html">
-                <button class="btn btn-green">
-                    Add Trek
-                </button>
-            </a>
+    <div class="stat-card">
+        <h2 id="totalFavorites">❤️ Favorites: 0</h2>
+    </div>
 
-            <a href="treks.html">
-                <button class="btn btn-blue">
-                    Explore Treks
-                </button>
-            </a>
+    <div class="stat-card">
+        <h2 id="totalReviews">⭐ Reviews: 0</h2>
+    </div>
+</section>
 
-            <a href="favorites.html">
-                <button class="btn btn-green">
-                    My Favorites ❤️
-                </button>
-            </a>
+<section class="feature-section">
+    <h1>Why Use HikeVerse?</h1>
 
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h2>🌦️ Weather Safety</h2>
+            <p>Check live weather before planning your trek.</p>
         </div>
 
+        <div class="feature-card">
+            <h2>⭐ Reviews</h2>
+            <p>Read reviews and ratings shared by trekkers.</p>
+        </div>
+
+        <div class="feature-card">
+            <h2>📍 Trek Planning</h2>
+            <p>View distance, duration, difficulty, maps and essentials.</p>
+        </div>
     </div>
-
-    <div style="
-        display:flex;
-        justify-content:center;
-        gap:30px;
-        flex-wrap:wrap;
-        padding:30px;
-    ">
-
-       <div style="
-    background:white;
-    padding:25px;
-    width:250px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1);
-">
-    <h2 id="totalTreks">🏔️ Total Treks: 0</h2>
-</div>
-
-<div style="
-    background:white;
-    padding:25px;
-    width:250px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1);
-">
-    <h2 id="totalFavorites">❤️ Favorites: 0</h2>
-</div>
-
-<div style="
-    background:white;
-    padding:25px;
-    width:250px;
-    border-radius:15px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.1);
-">
-    <h2 id="totalReviews">⭐ Reviews: 0</h2>
-</div>
-
-    </div>
-<script src="script.js"></script>
+</section>
+<script src="./script.js"></script>
     <script>
 
         const user = localStorage.getItem("loggedInUser");
@@ -186,6 +212,8 @@
 
         }
         loadStats();
+checkAdminAccess();
+       
 
     </script>
 
