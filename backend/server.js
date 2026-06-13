@@ -10,9 +10,22 @@ const Favorite = require("./models/Favorite");
 const Review = require("./models/Review");
 
 const app = express();
+const multer = require("multer");
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected 🚀"))
@@ -90,7 +103,7 @@ app.post("/login", async (req, res) => {
   
 
 // Add Trek Route
-app.post("/add-trek", async (req, res) => {
+app.post("/add-trek", upload.single("image"), async (req, res) => {
 
     try {
 
@@ -99,7 +112,7 @@ app.post("/add-trek", async (req, res) => {
     location,
     difficulty,
     description,
-    imageUrl,
+    
     distance,
     duration,
     bestSeason,
@@ -107,6 +120,10 @@ app.post("/add-trek", async (req, res) => {
     emergencyContact,
     mapLink
 } = req.body;
+
+const imageUrl = req.file
+    ? `http://localhost:5000/uploads/${req.file.filename}`
+    : "";
 if (req.body.role !== "admin") {
     return res.status(403).send("Only admin can add treks");
 }

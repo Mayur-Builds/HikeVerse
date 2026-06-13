@@ -66,7 +66,7 @@ async function addTrek() {
     const location = document.getElementById("location").value;
     const difficulty = document.getElementById("difficulty").value;
     const description = document.getElementById("description").value;
-    const imageUrl = document.getElementById("imageUrl").value;
+    const image = document.getElementById("image").files[0];
     const distance = document.getElementById("distance").value;
     const duration = document.getElementById("duration").value;
     const bestSeason = document.getElementById("bestSeason").value;
@@ -80,7 +80,7 @@ async function addTrek() {
     !location.trim() ||
     !difficulty.trim() ||
     !description.trim() ||
-    !imageUrl.trim() ||
+    !image||
     !distance.trim() ||
     !duration.trim() ||
     !bestSeason.trim() ||
@@ -93,27 +93,25 @@ async function addTrek() {
 }
     const role = localStorage.getItem("userRole");
 
-    const response = await fetch("http://localhost:5000/add-trek", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            trekName,
-            location,
-            difficulty,
-            description,
-            imageUrl,
-            distance,
-            duration,
-            bestSeason,
-            thingsToCarry,
-            emergencyContact,
-            mapLink,
-            role
-        })
-    });
+  const formData = new FormData();
 
+formData.append("trekName", trekName);
+formData.append("location", location);
+formData.append("difficulty", difficulty);
+formData.append("description", description);
+formData.append("image", image);
+formData.append("distance", distance);
+formData.append("duration", duration);
+formData.append("bestSeason", bestSeason);
+formData.append("thingsToCarry", thingsToCarry);
+formData.append("emergencyContact", emergencyContact);
+formData.append("mapLink", mapLink);
+formData.append("role", localStorage.getItem("userRole"));
+
+const response = await fetch("http://localhost:5000/add-trek", {
+    method: "POST",
+    body: formData
+});
     const data = await response.text();
     alert(data);
 }
