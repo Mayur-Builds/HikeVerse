@@ -129,7 +129,8 @@ async function loadTreks() {
         container.innerHTML += `
           <div class="trek-card" onclick="openTrek('${trek._id}')">
 
-    <img src="${trek.imageUrl}" alt="${trek.trekName}">
+<img src="${trek.imageUrl || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}" 
+     alt="${trek.trekName}">
 
     <div class="trek-card-content">
         <h2>${trek.trekName}</h2>
@@ -409,7 +410,7 @@ favorites.forEach((favorite) => {
              onclick="openFavoriteTrek('${favorite.trekId}')"
              style="cursor:pointer;">
 
-            <img src="${favorite.imageUrl}">
+            <img src="${favorite.imageUrl || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}">
 
             <div class="favorite-card-content">
 
@@ -515,15 +516,60 @@ async function loadStats() {
         await fetch(`http://localhost:5000/stats/${userEmail}`);
 
     const stats = await response.json();
+animateCounter("totalTreks", stats.totalTreks);
+animateCounter("totalFavorites", stats.totalFavorites);
+animateCounter("totalReviews", stats.totalReviews);
+}
 
-    document.getElementById("totalTreks").innerText =
-        "🏔️ Total Treks: " + stats.totalTreks;
+function animateCounter(elementId, target) {
 
-    document.getElementById("totalFavorites").innerText =
-        "❤️ Favorites: " + stats.totalFavorites;
+    let count = 0;
+    const element = document.getElementById(elementId);
 
-    document.getElementById("totalReviews").innerText =
-        "⭐ Reviews: " + stats.totalReviews;
+    const interval = setInterval(() => {
+
+        if (count >= target) {
+            clearInterval(interval);
+            element.innerText = target;
+            return;
+        }
+
+        count++;
+        element.innerText = count;
+
+    }, 80);
+}async function loadFeaturedTreks() {
+    try {
+        const response = await fetch("http://localhost:5000/treks");
+        const treks = await response.json();
+
+        const container = document.getElementById("featuredTreks");
+
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        const defaultImage = "https://images.unsplash.com/photo-1501785888041-af3ef285b470";
+
+        treks.slice(0, 3).forEach((trek) => {
+            container.innerHTML += `
+                <div class="trek-card" onclick="openTrek('${trek._id}')">
+                    <img src="${trek.imageUrl || defaultImage}" alt="${trek.trekName}">
+
+                    <div class="trek-card-content">
+                        <h2>${trek.trekName}</h2>
+                        <p><b>Location:</b> ${trek.location}</p>
+                        <p><b>Difficulty:</b> ${trek.difficulty}</p>
+                        <p>${trek.description ? trek.description.substring(0, 80) : "No description available"}...</p>
+                        <button class="view-btn">Explore Trek</button>
+                    </div>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.log("Featured treks loading error:", error);
+    }
 }
 function checkAdminAccess() {
 
@@ -536,9 +582,4 @@ function checkAdminAccess() {
         });
 
     }
-
 }
-
-
-
-
