@@ -129,15 +129,23 @@ async function loadTreks() {
         container.innerHTML += `
           <div class="trek-card" onclick="openTrek('${trek._id}')">
 
-<img src="${trek.imageUrl || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}" 
-     alt="${trek.trekName}">
+<div class="trek-image-box">
+    <img src="${trek.imageUrl || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}" 
+         alt="${trek.trekName}">
+    <span class="rating-badge">⭐ ${trek.rating || "4.5"}</span>
+</div>
 
     <div class="trek-card-content">
         <h2>${trek.trekName}</h2>
 
         <p><b>Location:</b> ${trek.location}</p>
 
-        <p><b>Difficulty:</b> ${trek.difficulty}</p>
+        <p>
+    <b>Difficulty:</b>
+    <span class="difficulty-badge ${trek.difficulty.toLowerCase()}">
+        ${trek.difficulty}
+    </span>
+</p>
 
         <p><b>Rating:</b> ⭐ ${trek.rating || "4.5"}</p>
 
@@ -205,8 +213,27 @@ async function loadTrekDetails() {
     document.getElementById("location").innerText =
         "Location: " + trek.location;
 
-    document.getElementById("difficulty").innerText =
-        "Difficulty: " + trek.difficulty;
+   let badgeColor = "#f1c40f";
+
+if(trek.difficulty === "Easy")
+    badgeColor = "#2ecc71";
+
+if(trek.difficulty === "Hard")
+    badgeColor = "#e74c3c";
+
+document.getElementById("difficulty").innerHTML =
+`
+Difficulty:
+<span style="
+background:${badgeColor};
+padding:6px 12px;
+border-radius:20px;
+color:white;
+font-weight:bold;
+">
+${trek.difficulty}
+</span>
+`;
 
     document.getElementById("description").innerText =
     "Description: " + trek.description;
@@ -221,8 +248,11 @@ document.getElementById("duration").innerText =
 document.getElementById("bestSeason").innerText =
     "Best Season: " + trek.bestSeason;
 
-document.getElementById("thingsToCarry").innerText =
-    "Things To Carry: " + trek.thingsToCarry;
+document.getElementById("thingsToCarry").innerHTML =
+    trek.thingsToCarry
+        .split("\n")
+        .map(item => `<li>${item}</li>`)
+        .join("");
 
 document.getElementById("emergencyContact").innerText =
     "Emergency Contact: " + trek.emergencyContact;
@@ -582,4 +612,17 @@ function checkAdminAccess() {
         });
 
     }
+}
+function filterTreks(difficulty) {
+    const cards = document.querySelectorAll(".trek-card");
+
+    cards.forEach(card => {
+        const cardText = card.innerText;
+
+        if (difficulty === "All" || cardText.includes(difficulty)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
 }

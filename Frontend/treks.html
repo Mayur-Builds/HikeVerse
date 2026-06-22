@@ -16,6 +16,8 @@
             font-size:16px;
         }
 
+
+      
         #trekContainer{
             display:flex;
             flex-wrap:wrap;
@@ -85,6 +87,12 @@
         placeholder="Search trek by name..."
         onkeyup="searchTreks()"
     >
+      <div class="filter-buttons">
+    <button onclick="filterTreks('All')">All</button>
+    <button onclick="filterTreks('Easy')">Easy</button>
+    <button onclick="filterTreks('Moderate')">Moderate</button>
+    <button onclick="filterTreks('Hard')">Hard</button>
+</div>
 
     <div id="trekContainer"></div>
 

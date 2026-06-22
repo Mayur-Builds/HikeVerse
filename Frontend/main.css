@@ -217,3 +217,86 @@ footer p{
     font-weight:600;
     color:#2c3e50;
 }
+
+
+#thingsToCarry{
+    padding-left:25px;
+    line-height:1.8;
+    font-size:17px;
+}
+
+#thingsToCarry li{
+    margin-bottom:8px;
+}
+
+.info-box{
+    background:white;
+    padding:18px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:0.3s ease;
+}
+
+.info-box:hover{
+    transform:translateY(-4px);
+}
+
+
+.difficulty-badge{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    color:white;
+}
+
+.difficulty-badge.easy{
+    background:#2ecc71;
+}
+
+.difficulty-badge.moderate{
+    background:#f1c40f;
+}
+
+.difficulty-badge.hard{
+    background:#e74c3c;
+}
+
+.trek-image-box{
+    position:relative;
+    overflow:hidden;
+}
+
+.rating-badge{
+    position:absolute;
+    top:14px;
+    right:14px;
+    background:rgba(0,0,0,0.75);
+    color:white;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:700;
+}
+
+.filter-buttons{
+    text-align:center;
+    margin:25px 0 45px;
+}
+
+.filter-buttons button{
+    padding:12px 22px;
+    margin:8px;
+    border:none;
+    border-radius:25px;
+    background:#1f2d3d;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.filter-buttons button:hover{
+    background:#2ecc71;
+    transform:translateY(-4px);
+}
