@@ -317,3 +317,70 @@ footer p{
     font-weight:600;
     cursor:pointer;
 }
+#bookingContainer{
+    max-width:1100px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.booking-card{
+    background:white;
+    padding:22px;
+    margin-bottom:20px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+}
+
+.booking-card h2{
+    color:#1f2d3d;
+    margin-bottom:12px;
+}
+
+.booking-card p{
+    margin:8px 0;
+    color:#555;
+}
+
+.status-pending{
+    color:#f39c12;
+    font-weight:bold;
+}
+
+#myBookingsContainer{
+    max-width:1000px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.my-booking-card{
+    background:white;
+    padding:22px;
+    margin-bottom:20px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+}
+
+.my-booking-card h2{
+    color:#1f2d3d;
+    margin-bottom:12px;
+}
+
+.my-booking-card p{
+    margin:8px 0;
+    color:#555;
+}
+
+.status-approved{
+    color:#2ecc71;
+    font-weight:bold;
+}
+
+.status-rejected{
+    color:#e74c3c;
+    font-weight:bold;
+}
+
+.status-pending{
+    color:#f39c12;
+    font-weight:bold;
+}

@@ -736,3 +736,120 @@ async function requestBooking() {
 
     alert(data);
 }
+async function loadBookings() {
+
+    const response =
+        await fetch("http://localhost:5000/bookings");
+
+    const bookings =
+        await response.json();
+
+    const container =
+        document.getElementById("bookingContainer");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    bookings.forEach((booking) => {
+
+        container.innerHTML += `
+            <div class="booking-card">
+
+                <h2>🏔️ ${booking.trekName}</h2>
+
+                <p><b>User:</b> ${booking.userEmail}</p>
+
+                <p><b>Date:</b> ${booking.bookingDate}</p>
+
+                <p><b>People:</b> ${booking.peopleCount}</p>
+
+              <p class="status-pending">
+    Status: ${booking.status}
+</p>
+
+<button class="btn btn-green"
+onclick="updateBookingStatus('${booking._id}','Approved')">
+Approve
+</button>
+
+<button class="btn btn-red"
+onclick="updateBookingStatus('${booking._id}','Rejected')">
+Reject
+</button>
+            </div>
+        `;
+    });
+}
+async function updateBookingStatus(id, status) {
+
+    const response = await fetch(
+        `http://localhost:5000/booking/${id}/status`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                status: status
+            })
+        }
+    );
+
+    const data = await response.text();
+
+    alert(data);
+
+    loadBookings();
+}
+
+
+async function loadMyBookings() {
+
+    const userEmail =
+        localStorage.getItem("loggedInUser");
+
+    const response =
+        await fetch(
+            `http://localhost:5000/my-bookings/${userEmail}`
+        );
+
+    const bookings =
+        await response.json();
+
+    const container =
+        document.getElementById("myBookingsContainer");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    bookings.forEach((booking) => {
+
+        let statusClass = "status-pending";
+
+        if (booking.status === "Approved") {
+            statusClass = "status-approved";
+        }
+
+        if (booking.status === "Rejected") {
+            statusClass = "status-rejected";
+        }
+
+        container.innerHTML += `
+            <div class="my-booking-card">
+
+                <h2>🏔️ ${booking.trekName}</h2>
+
+                <p><b>Date:</b> ${booking.bookingDate}</p>
+
+                <p><b>People:</b> ${booking.peopleCount}</p>
+
+                <p class="${statusClass}">
+                    Status: ${booking.status}
+                </p>
+
+            </div>
+        `;
+    });
+}

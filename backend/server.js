@@ -468,6 +468,36 @@ app.get("/bookings", async (req, res) => {
         res.status(500).send("Failed to fetch bookings");
     }
 });
+app.put("/booking/:id/status", async (req, res) => {
+    try {
+        const { status } = req.body;
+
+        if (!status) {
+            return res.status(400).send("Status is required");
+        }
+
+        await Booking.findByIdAndUpdate(req.params.id, {
+            status: status
+        });
+
+        res.send("Booking status updated successfully");
+
+    } catch (error) {
+        res.status(500).send("Failed to update booking status");
+    }
+});
+
+app.get("/my-bookings/:userEmail", async (req, res) => {
+    try {
+        const bookings = await Booking.find({
+            userEmail: req.params.userEmail
+        }).sort({ createdAt: -1 });
+
+        res.json(bookings);
+    } catch (error) {
+        res.status(500).send("Failed to fetch user bookings");
+    }
+});
 
 // Start Server
 app.listen(PORT, () => {
