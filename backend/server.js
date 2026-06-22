@@ -8,10 +8,12 @@ const User = require("./models/User");
 const Trek = require("./models/Trek");
 const Favorite = require("./models/Favorite");
 const Review = require("./models/Review");
+const Booking = require("./models/Booking");
 
 const app = express();
 const multer = require("multer");
 const path = require("path");
+
 
 app.use(cors());
 app.use(express.json());
@@ -428,6 +430,43 @@ app.get("/stats/:userEmail", async (req, res) => {
 
     }
 
+});
+app.post("/booking", async (req, res) => {
+    try {
+        const {
+            trekId,
+            trekName,
+            userEmail,
+            bookingDate,
+            peopleCount
+        } = req.body;
+
+        if (!trekId || !trekName || !userEmail || !bookingDate || !peopleCount) {
+            return res.status(400).send("All booking fields are required");
+        }
+
+        const newBooking = new Booking({
+            trekId,
+            trekName,
+            userEmail,
+            bookingDate,
+            peopleCount
+        });
+
+        await newBooking.save();
+
+        res.send("Booking request submitted successfully");
+    } catch (error) {
+        res.status(500).send("Booking failed");
+    }
+});
+app.get("/bookings", async (req, res) => {
+    try {
+        const bookings = await Booking.find().sort({ createdAt: -1 });
+        res.json(bookings);
+    } catch (error) {
+        res.status(500).send("Failed to fetch bookings");
+    }
 });
 
 // Start Server

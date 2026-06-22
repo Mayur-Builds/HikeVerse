@@ -94,6 +94,14 @@
     <button onclick="filterTreks('Hard')">Hard</button>
 </div>
 
+<div class="sort-box">
+    <select id="sortSelect" onchange="sortTreks()">
+        <option value="">Sort Treks</option>
+        <option value="az">Name A-Z</option>
+        <option value="za">Name Z-A</option>
+        <option value="difficulty">Difficulty</option>
+    </select>
+</div>
     <div id="trekContainer"></div>
 
    

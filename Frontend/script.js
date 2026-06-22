@@ -614,9 +614,20 @@ function checkAdminAccess() {
     }
 }
 function filterTreks(difficulty) {
+
     const cards = document.querySelectorAll(".trek-card");
+    const buttons = document.querySelectorAll(".filter-buttons button");
+
+    buttons.forEach(button => {
+        button.classList.remove("active");
+
+        if (button.innerText === difficulty) {
+            button.classList.add("active");
+        }
+    });
 
     cards.forEach(card => {
+
         const cardText = card.innerText;
 
         if (difficulty === "All" || cardText.includes(difficulty)) {
@@ -624,5 +635,104 @@ function filterTreks(difficulty) {
         } else {
             card.style.display = "none";
         }
+
     });
+}
+function sortTreks() {
+
+    const container = document.getElementById("trekContainer");
+
+    const cards = Array.from(
+        document.querySelectorAll(".trek-card")
+    );
+
+    const sortValue =
+        document.getElementById("sortSelect").value;
+
+    cards.sort((a, b) => {
+
+        const nameA =
+            a.querySelector("h2").innerText.toLowerCase();
+
+        const nameB =
+            b.querySelector("h2").innerText.toLowerCase();
+
+        if (sortValue === "az") {
+            return nameA.localeCompare(nameB);
+        }
+
+        if (sortValue === "za") {
+            return nameB.localeCompare(nameA);
+        }
+        if (sortValue === "difficulty") {
+    const order = {
+        "Easy": 1,
+        "Moderate": 2,
+        "Hard": 3
+    };
+
+    const diffA = a.innerText.includes("Easy")
+        ? "Easy"
+        : a.innerText.includes("Moderate")
+        ? "Moderate"
+        : "Hard";
+
+    const diffB = b.innerText.includes("Easy")
+        ? "Easy"
+        : b.innerText.includes("Moderate")
+        ? "Moderate"
+        : "Hard";
+
+    return order[diffA] - order[diffB];
+}
+        return 0;
+    });
+
+    container.innerHTML = "";
+
+    cards.forEach(card => {
+        container.appendChild(card);
+    });
+}
+async function requestBooking() {
+
+    const trekId = localStorage.getItem("selectedTrek");
+    const userEmail = localStorage.getItem("loggedInUser");
+
+    const trekResponse =
+        await fetch(`http://localhost:5000/trek/${trekId}`);
+
+    const trek = await trekResponse.json();
+
+    const bookingDate =
+        document.getElementById("bookingDate").value;
+
+    const peopleCount =
+        document.getElementById("peopleCount").value;
+
+    if (!bookingDate || !peopleCount) {
+        alert("Please fill all booking details");
+        return;
+    }
+
+    const response = await fetch(
+        "http://localhost:5000/booking",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                trekId,
+                trekName: trek.trekName,
+                userEmail,
+                bookingDate,
+                peopleCount
+            })
+        }
+    );
+
+    const data = await response.text();
+
+    alert(data);
 }

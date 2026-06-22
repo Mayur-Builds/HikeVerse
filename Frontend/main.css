@@ -300,3 +300,20 @@ footer p{
     background:#2ecc71;
     transform:translateY(-4px);
 }
+.filter-buttons button.active{
+    background:#2ecc71;
+    transform:translateY(-4px);
+}
+.sort-box{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.sort-box select{
+    padding:12px 20px;
+    border-radius:14px;
+    border:1px solid #ccc;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
