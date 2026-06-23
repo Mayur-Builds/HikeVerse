@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile - HikeVerse</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <h2>🏔️ HikeVerse</h2>
+
+    <div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="treks.html">Treks</a>
+        <a href="my-bookings.html">My Bookings</a>
+        <a href="favorites.html">Favorites</a>
+        <a href="profile.html">Profile</a>
+    </div>
+</nav>
+
+<h1 class="page-title">👤 My Profile</h1>
+
+<div class="profile-card">
+    <h2 id="profileName"></h2>
+    <p id="profileEmail"></p>
+
+    <div class="profile-stats">
+        <div>
+            <h3 id="profileBookings">0</h3>
+            <p>Bookings</p>
+        </div>
+
+        <div>
+            <h3 id="profileFavorites">0</h3>
+            <p>Favorites</p>
+        </div>
+
+        <div>
+            <h3 id="profileReviews">0</h3>
+            <p>Reviews</p>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    loadProfile();
+</script>
+
+</body>
+</html>

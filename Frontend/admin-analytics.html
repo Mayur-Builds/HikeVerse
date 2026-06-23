@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Analytics - HikeVerse</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <h2>🏔️ HikeVerse</h2>
+
+    <div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="treks.html">Treks</a>
+        <a href="admin-bookings.html">Bookings</a>
+        <a href="admin-analytics.html">Analytics</a>
+    </div>
+</nav>
+
+<h1 class="page-title">📊 Analytics Dashboard</h1>
+
+<div id="analyticsContainer" class="profile-stats">
+
+    <div>
+        <h3 id="totalTreksCount">0</h3>
+        <p>Total Treks</p>
+    </div>
+
+    <div>
+        <h3 id="totalBookingsCount">0</h3>
+        <p>Total Bookings</p>
+    </div>
+
+    <div>
+        <h3 id="approvedBookingsCount">0</h3>
+        <p>Approved</p>
+    </div>
+
+    <div>
+        <h3 id="pendingBookingsCount">0</h3>
+        <p>Pending</p>
+    </div>
+
+    <div>
+        <h3 id="rejectedBookingsCount">0</h3>
+        <p>Rejected</p>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+<script>
+    loadAnalytics();
+</script>
+
+</body>
+</html>

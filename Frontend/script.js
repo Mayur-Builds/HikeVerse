@@ -853,3 +853,52 @@ async function loadMyBookings() {
         `;
     });
 }
+async function loadProfile() {
+
+    const userEmail = localStorage.getItem("loggedInUser");
+    const username = localStorage.getItem("username") || userEmail;
+
+    const response =
+        await fetch(`http://localhost:5000/profile/${userEmail}`);
+
+    const data = await response.json();
+
+    document.getElementById("profileName").innerText =
+        username;
+
+    document.getElementById("profileEmail").innerText =
+        userEmail;
+
+    document.getElementById("profileBookings").innerText =
+        data.totalBookings;
+
+    document.getElementById("profileFavorites").innerText =
+        data.totalFavorites;
+
+    document.getElementById("profileReviews").innerText =
+        data.totalReviews;
+}
+
+async function loadAnalytics() {
+
+    const response =
+        await fetch("http://localhost:5000/admin-analytics");
+
+    const data =
+        await response.json();
+
+    document.getElementById("totalTreksCount").innerText =
+        data.totalTreks;
+
+    document.getElementById("totalBookingsCount").innerText =
+        data.totalBookings;
+
+    document.getElementById("approvedBookingsCount").innerText =
+        data.approvedBookings;
+
+    document.getElementById("pendingBookingsCount").innerText =
+        data.pendingBookings;
+
+    document.getElementById("rejectedBookingsCount").innerText =
+        data.rejectedBookings;
+}

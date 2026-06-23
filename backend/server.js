@@ -499,6 +499,63 @@ app.get("/my-bookings/:userEmail", async (req, res) => {
     }
 });
 
+app.get("/profile/:userEmail", async (req, res) => {
+    try {
+
+        const userEmail = req.params.userEmail;
+
+        const totalFavorites =
+            await Favorite.countDocuments({ userEmail });
+
+        const totalReviews =
+            await Review.countDocuments({ userEmail });
+
+        const totalBookings =
+            await Booking.countDocuments({ userEmail });
+
+        res.json({
+            totalFavorites,
+            totalReviews,
+            totalBookings
+        });
+
+    } catch (error) {
+
+        res.status(500).send("Failed to load profile");
+
+    }
+});
+
+app.get("/admin-analytics", async (req, res) => {
+    try {
+        const totalTreks = await Trek.countDocuments();
+        const totalBookings = await Booking.countDocuments();
+
+        const approvedBookings = await Booking.countDocuments({
+            status: "Approved"
+        });
+
+        const pendingBookings = await Booking.countDocuments({
+            status: "Pending"
+        });
+
+        const rejectedBookings = await Booking.countDocuments({
+            status: "Rejected"
+        });
+
+        res.json({
+            totalTreks,
+            totalBookings,
+            approvedBookings,
+            pendingBookings,
+            rejectedBookings
+        });
+
+    } catch (error) {
+        res.status(500).send("Failed to load analytics");
+    }
+});
+
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
