@@ -3,6 +3,7 @@
 <head>
     <title>Admin Analytics - HikeVerse</title>
     <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -46,6 +47,17 @@
         <p>Rejected</p>
     </div>
 
+</div>
+<div class="chart-box">
+    <canvas id="bookingChart"></canvas>
+</div>
+<div class="popular-card">
+    <h2>🏆 Most Popular Trek</h2>
+    <p id="mostPopularTrek">Loading...</p>
+</div>
+<div class="popular-card">
+    <h2>⭐ Highest Rated Trek</h2>
+    <p id="highestRatedTrek">Loading...</p>
 </div>
 
 <script src="script.js"></script>

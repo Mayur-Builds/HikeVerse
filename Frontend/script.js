@@ -901,4 +901,38 @@ async function loadAnalytics() {
 
     document.getElementById("rejectedBookingsCount").innerText =
         data.rejectedBookings;
+
+    const popularTrek =
+    document.getElementById("mostPopularTrek");
+
+    document.getElementById("highestRatedTrek").innerText =
+    `${data.highestRatedTrek} (${data.highestRating}/5)`;
+
+if(popularTrek){
+    popularTrek.innerText =
+        data.mostPopularTrek;
+}
+
+const chart = document.getElementById("bookingChart");
+
+if (chart) {
+  new Chart(chart, {
+    type: "doughnut",
+    data: {
+        labels: ["Approved", "Pending", "Rejected"],
+        datasets: [{
+            data: [
+                data.approvedBookings,
+                data.pendingBookings,
+                data.rejectedBookings
+            ],
+            backgroundColor: [
+                "#2ecc71",
+                "#f1c40f",
+                "#e74c3c"
+            ]
+        }]
+    }
+});
+}
 }

@@ -542,13 +542,56 @@ app.get("/admin-analytics", async (req, res) => {
         const rejectedBookings = await Booking.countDocuments({
             status: "Rejected"
         });
+        const popularTrek = await Booking.aggregate([
+    {
+        $group: {
+            _id: "$trekName",
+            totalBookings: { $sum: 1 }
+        }
+    },
+    {
+        $sort: { totalBookings: -1 }
+    },
+    {
+        $limit: 1
+    }
+]);
+const highestRatedTrek = await Review.aggregate([
+    {
+        $group: {
+            _id: "$trekId",
+            averageRating: { $avg: "$rating" },
+            totalReviews: { $sum: 1 }
+        }
+    },
+    {
+        $sort: { averageRating: -1 }
+    },
+    {
+        $limit: 1
+    }
+]);
 
+let highestRatedTrekName = "No reviews yet";
+let highestRating = 0;
+
+if (highestRatedTrek.length > 0) {
+    const trek = await Trek.findById(highestRatedTrek[0]._id);
+
+    if (trek) {
+        highestRatedTrekName = trek.trekName;
+        highestRating = highestRatedTrek[0].averageRating.toFixed(1);
+    }
+}
         res.json({
             totalTreks,
             totalBookings,
             approvedBookings,
             pendingBookings,
-            rejectedBookings
+            rejectedBookings,
+            mostPopularTrek: popularTrek.length > 0 ? popularTrek[0]._id : "No bookings yet",
+            highestRatedTrek: highestRatedTrekName,
+            highestRating
         });
 
     } catch (error) {

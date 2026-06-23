@@ -426,3 +426,25 @@ footer p{
     font-size:32px;
     color:#2ecc71;
 }
+.chart-box{
+    max-width:600px;
+    height:420px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
+
+#bookingChart{
+    max-height:360px;
+}
+.popular-card{
+    max-width:600px;
+    margin:30px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+}
