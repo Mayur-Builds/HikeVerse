@@ -124,25 +124,40 @@
     justify-content:center;
     gap:30px;
     flex-wrap:wrap;
-    padding:50px 20px;
-    margin-top:-45px;
+    padding:60px 20px;
+    margin-top:-70px;
+    position:relative;
+    z-index:5;
 }
-
 
 
 .stat-card{
-    background:rgba(255,255,255,0.85);
-    backdrop-filter:blur(12px);
-    padding:35px;
-    width:270px;
-    border-radius:25px;
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(16px);
+    padding:35px 45px;
+    width:280px;
+    border-radius:28px;
     text-align:center;
-    box-shadow:0 15px 40px rgba(0,0,0,0.18);
-    transition:0.3s ease;
+    box-shadow:0 18px 45px rgba(0,0,0,0.18);
+    transition:0.35s ease;
+    border:1px solid rgba(255,255,255,0.6);
 }
 
 .stat-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 28px 60px rgba(0,0,0,0.25);
+}
+.stat-card h1{
+    font-size:52px;
+    color:#2ecc71;
+    margin-bottom:10px;
+    font-weight:800;
+}
+
+.stat-card p{
+    font-size:18px;
+    font-weight:700;
+    color:#1f2d3d;
 }
 
 
@@ -169,45 +184,49 @@
 
 .trek-card{
     background:white;
-    width:320px;
-    border-radius:24px;
+    width:340px;
+    border-radius:28px;
     overflow:hidden;
-    box-shadow:0 14px 35px rgba(0,0,0,0.14);
-    transition:0.35s ease;
+    box-shadow:0 18px 45px rgba(0,0,0,0.15);
+    transition:all 0.4s ease;
     cursor:pointer;
+    position:relative;
 }
 
 .trek-card:hover{
-    transform:translateY(-12px) scale(1.02);
-    box-shadow:0 25px 55px rgba(0,0,0,0.22);
+    transform:translateY(-15px);
+    box-shadow:0 30px 65px rgba(0,0,0,0.22);
 }
 
 .trek-card img{
     width:100%;
-    height:210px;
+    height:230px;
     object-fit:cover;
-    transition:0.4s ease;
+    transition:transform 0.6s ease;
 }
 
 .trek-card:hover img{
-    transform:scale(1.08);
+    transform:scale(1.10);
 }
 
 .trek-card-content{
-    padding:22px;
+    padding:24px;
     text-align:left;
 }
 
 .trek-card-content h2,
 .trek-card-content h3{
-    margin-bottom:12px;
+    margin-bottom:14px;
     color:#1f2d3d;
+    font-size:24px;
+    font-weight:700;
 }
 
 .trek-card-content p{
-    margin-bottom:9px;
-    color:#555;
-    line-height:1.5;
+    margin-bottom:10px;
+    color:#666;
+    line-height:1.7;
+    font-size:15px;
 }
 
 .feature-section{
@@ -231,16 +250,28 @@
 
 .feature-card{
     background:white;
-    padding:35px;
-    width:300px;
-    border-radius:25px;
+    padding:40px;
+    width:320px;
+    border-radius:28px;
     text-align:center;
-    box-shadow:0 12px 35px rgba(0,0,0,0.12);
-    transition:0.3s ease;
+    box-shadow:0 15px 40px rgba(0,0,0,0.12);
+    transition:0.35s ease;
+    border-top:5px solid #2ecc71;
 }
 
 .feature-card:hover{
-    transform:translateY(-8px);
+    transform:translateY(-12px);
+    box-shadow:0 25px 55px rgba(0,0,0,0.18);
+}
+
+.feature-card h2{
+    margin-bottom:18px;
+    color:#1f2d3d;
+}
+
+.feature-card p{
+    color:#666;
+    line-height:1.7;
 }
 
     </style>
@@ -253,18 +284,34 @@
     <h2>🏔️ HikeVerse</h2>
 
     <div>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="treks.html">Treks</a>
-        <a href="admin-bookings.html" class="admin-only">Bookings</a>
-        <a href="admin-analytics.html" class="admin-only">Analytics</a>
-        <a href="favorites.html">Favorites</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
 
-        <button class="btn btn-red" onclick="logout()">
-            Logout
-        </button>
-    </div>
+    <a href="treks.html">Treks</a>
+
+    <a href="my-bookings.html" class="user-only">
+        My Bookings
+    </a>
+
+    <a href="favorites.html" class="user-only">
+        Favorites
+    </a>
+
+    <a href="admin-bookings.html" class="admin-only">
+        Bookings
+    </a>
+
+    <a href="admin-analytics.html" class="admin-only">
+        Analytics
+    </a>
+
+    <a href="profile.html">
+        Profile
+    </a>
+
+    <button class="btn btn-red" onclick="logout()">
+        Logout
+    </button>
+</div>
 
 </nav>
 

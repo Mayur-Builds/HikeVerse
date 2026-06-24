@@ -605,7 +605,13 @@ function checkAdminAccess() {
 
     const role = localStorage.getItem("userRole");
 
-    if (role !== "admin") {
+    if (role === "admin") {
+
+        document.querySelectorAll(".user-only").forEach(item => {
+            item.style.display = "none";
+        });
+
+    } else {
 
         document.querySelectorAll(".admin-only").forEach(item => {
             item.style.display = "none";
