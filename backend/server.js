@@ -6,24 +6,33 @@ const cors = require("cors");
 
 const User = require("./models/User");
 const Trek = require("./models/Trek");
-const Favorite = require("./models/Favorite");
+const Favorite = require("./models/favorite");
 const Review = require("./models/Review");
 const Booking = require("./models/Booking");
 
 const app = express();
 const multer = require("multer");
 const path = require("path");
-
+const { S3Client } = require("@aws-sdk/client-s3");
+const multerS3 = require("multer-s3");
 
 app.use(cors());
 app.use(express.json());
+
 app.use("/uploads", express.static("uploads"));
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/");
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+});
+const storage = multerS3({
+    s3: s3,
+    bucket: process.env.AWS_BUCKET_NAME,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    key: function (req, file, cb) {
+        cb(null, `images/${Date.now()}${path.extname(file.originalname)}`);
     }
 });
 
@@ -123,9 +132,7 @@ app.post("/add-trek", upload.single("image"), async (req, res) => {
     mapLink
 } = req.body;
 
-const imageUrl = req.file
-    ? `http://localhost:5000/uploads/${req.file.filename}`
-    : "";
+const imageUrl = req.file ? req.file.location : "";
 if (req.body.role !== "admin") {
     return res.status(403).send("Only admin can add treks");
 }
