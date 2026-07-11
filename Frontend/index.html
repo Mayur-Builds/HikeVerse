@@ -52,37 +52,13 @@
 
     <section class="treks">
 
-        <h2>Popular Treks</h2>
+    <h2>Featured Treks</h2>
 
-        <div class="card-container">
+    <div class="card-container" id="featuredTreks">
 
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop" alt="Mountain">
+    </div>
 
-                <h3>Himalayan Trek</h3>
-
-                <p>Experience snow mountains and breathtaking views.</p>
-            </div>
-
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Forest">
-
-                <h3>Forest Adventure</h3>
-
-                <p>Walk through deep forests and natural trails.</p>
-            </div>
-
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop" alt="Camping">
-
-                <h3>Camping Trek</h3>
-
-                <p>Enjoy camping under the stars with friends.</p>
-            </div>
-
-        </div>
-
-    </section>
+</section>
     <!-- Footer -->
 
 <footer>
@@ -100,6 +76,12 @@
 </footer>
 
 <script src="script.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    loadFeaturedTreks();
+});
+</script>
 
 </body>
 </html>

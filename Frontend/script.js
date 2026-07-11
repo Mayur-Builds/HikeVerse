@@ -1,5 +1,6 @@
 // Simple test to check JS is working
 console.log("HikeVerse JS Loaded");
+const API_URL = "http://13.235.9.206:5000";
 
 
 
@@ -7,8 +8,15 @@ async function loginUser() {
 
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    
+    if(!email.trim() || !password.trim()){
 
-    const response = await fetch("http://localhost:5000/login", {
+    showToast("Please enter email and password","warning");
+
+    return;
+
+}
+    const response = await fetch("http://13.235.9.206:5000/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -23,18 +31,24 @@ async function loginUser() {
 
     const data = await response.json();
 
-    if (data.message === "Login Successful") {
+   if (data.message === "Login Successful") {
 
-        localStorage.setItem("loggedInUser", email);
-        localStorage.setItem("userId", data.userId);
-        localStorage.setItem("username", data.username);
-        localStorage.setItem("userRole", data.role);
+    localStorage.setItem("loggedInUser", email);
+    localStorage.setItem("userId", data.userId);
+    localStorage.setItem("username", data.username);
+    localStorage.setItem("userRole", data.role);
 
+    showToast("✅ Login Successful");
+
+    setTimeout(() => {
         window.location.href = "dashboard.html";
+    },1000);
 
-    } else {
-        alert(data.message || "Login failed");
-    }}
+} else {
+
+    showToast(data.message || "Login Failed","error");
+
+}}
 
 
 async function signupUser() {
@@ -43,7 +57,19 @@ async function signupUser() {
     const email = document.getElementById("signupEmail").value;
     const password = document.getElementById("signupPassword").value;
 
-    const response = await fetch("http://localhost:5000/signup", {
+    if(
+    !username.trim() ||
+    !email.trim() ||
+    !password.trim()
+){
+
+    showToast("Please fill all fields","warning");
+
+    return;
+
+}
+
+    const response = await fetch("http://13.235.9.206:5000/signup", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -55,9 +81,13 @@ async function signupUser() {
         })
     });
 
-    const data = await response.text();
+   const data = await response.text();
 
-    alert(data);
+showToast(data);
+
+setTimeout(()=>{
+    window.location.href="login.html";
+},1000);
 }
 
 async function addTrek() {
@@ -88,7 +118,7 @@ async function addTrek() {
     !emergencyContact.trim() ||
     !mapLink.trim()
 ) {
-    alert("Please fill all fields.");
+    showToast("Please fill all fields.","warning");
     return;
 }
     const role = localStorage.getItem("userRole");
@@ -108,18 +138,27 @@ formData.append("emergencyContact", emergencyContact);
 formData.append("mapLink", mapLink);
 formData.append("role", localStorage.getItem("userRole"));
 
-const response = await fetch("http://localhost:5000/add-trek", {
+const response = await fetch("http://13.235.9.206:5000/add-trek", {
     method: "POST",
     body: formData
 });
     const data = await response.text();
-    alert(data);
+
+showToast("✅ Trek Added");
+
+setTimeout(()=>{
+    window.location.href="treks.html";
+},1000);
 }
 
 async function loadTreks() {
-    const response = await fetch("http://localhost:5000/treks");
+    showLoader();
 
-    const treks = await response.json();
+
+
+const response = await fetch(`${API_URL}/treks`);
+
+const treks = await response.json();
 
     const container = document.getElementById("trekContainer");
 
@@ -129,9 +168,13 @@ async function loadTreks() {
         container.innerHTML += `
           <div class="trek-card" onclick="openTrek('${trek._id}')">
 
+
+
+
 <div class="trek-image-box">
-    <img src="${trek.imageUrl || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470'}" 
-         alt="${trek.trekName}">
+ <img src="${API_URL}/${trek.imageUrl}"
+     onerror="this.src='https://images.unsplash.com/photo-1501785888041-af3ef285b470'"
+     alt="${trek.trekName}">
     <span class="rating-badge">⭐ ${trek.rating || "4.5"}</span>
 </div>
 
@@ -142,9 +185,13 @@ async function loadTreks() {
 
         <p>
     <b>Difficulty:</b>
-    <span class="difficulty-badge ${trek.difficulty.toLowerCase()}">
-        ${trek.difficulty}
-    </span>
+    <span class="difficulty-badge ${
+    trek.difficulty.includes("Easy") ? "easy" :
+    trek.difficulty.includes("Hard") ? "hard" :
+    "moderate"
+}">
+    ${trek.difficulty}
+</span>
 </p>
 
         <p><b>Rating:</b> ⭐ ${trek.rating || "4.5"}</p>
@@ -160,6 +207,8 @@ async function loadTreks() {
 </div>
         `;
     });
+    
+    hideLoader();
 }
 
 
@@ -200,7 +249,7 @@ async function loadTrekDetails() {
     const trekId = localStorage.getItem("selectedTrek");
 
     const response =
-        await fetch(`http://localhost:5000/trek/${trekId}`);
+        await fetch(`http://13.235.9.206:5000/trek/${trekId}`);
 
     const trek = await response.json();
 
@@ -274,7 +323,7 @@ async function deleteTrek() {
     if (!confirmDelete) return;
 
 const response =
-    await fetch(`http://localhost:5000/trek/${trekId}`, {
+    await fetch(`http://13.235.9.206:5000/trek/${trekId}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"
@@ -284,11 +333,16 @@ const response =
         })
     });
 
-    const data = await response.text();
+const data = await response.text();
 
-    alert(data);
+showToast(data);
 
-    window.location.href = "treks.html";
+setTimeout(()=>{
+    window.location.href="treks.html";
+},1000);
+    
+
+    
 }
 function goToEditTrek() {
     window.location.href = "edit-trek.html";
@@ -299,7 +353,7 @@ async function loadEditTrek() {
     const trekId = localStorage.getItem("selectedTrek");
 
     const response =
-        await fetch(`http://localhost:5000/trek/${trekId}`);
+        await fetch(`http://13.235.9.206:5000/trek/${trekId}`);
 
     const trek = await response.json();
 
@@ -334,7 +388,7 @@ const mapLink = document.getElementById("mapLink").value;
 const role = localStorage.getItem("userRole");
 
     const response =
-        await fetch(`http://localhost:5000/trek/${trekId}`, {
+        await fetch(`http://13.235.9.206:5000/trek/${trekId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -357,49 +411,85 @@ role
 
     const data = await response.text();
 
-    alert(data);
-
-    window.location.href = "treks.html";
+   
+showToast(data);
+setTimeout(()=>{
+    window.location.href="treks.html";
+},1000);
 }
 
 async function loadWeather(location) {
 
-    const response =
-        await fetch(`http://localhost:5000/weather/${location}`);
+    try {
 
-    const weather = await response.json();
+        const response =
+            await fetch(`http://13.235.9.206:5000/weather/${location}`);
 
-    document.getElementById("temperature").innerText =
-        "Temperature: " + weather.temperature_2m + "°C";
+        if (!response.ok) {
 
-    document.getElementById("windSpeed").innerText =
-        "Wind Speed: " + weather.wind_speed_10m + " km/h";
+            document.getElementById("temperature").innerText =
+                "Weather not available";
 
-    document.getElementById("humidity").innerText =
-        "Humidity: " + weather.relative_humidity_2m + "%";
+            document.getElementById("windSpeed").innerText = "";
 
-    let advice = "";
+            document.getElementById("humidity").innerText = "";
 
-    if (weather.temperature_2m > 35) {
-        advice = "⚠️ Very hot. Carry extra water and avoid afternoon trekking.";
-    } else if (weather.wind_speed_10m > 30) {
-        advice = "⚠️ Strong winds. Be careful on exposed mountain trails.";
-    } else {
-        advice = "✅ Weather looks suitable for trekking.";
+            document.getElementById("weatherAdvice").innerText =
+                "Unable to fetch weather for this location.";
+
+            return;
+        }
+
+        const weather = await response.json();
+
+        document.getElementById("temperature").innerText =
+            "Temperature: " + weather.temperature_2m + "°C";
+
+        document.getElementById("windSpeed").innerText =
+            "Wind Speed: " + weather.wind_speed_10m + " km/h";
+
+        document.getElementById("humidity").innerText =
+            "Humidity: " + weather.relative_humidity_2m + "%";
+
+        let advice = "";
+
+        if (weather.temperature_2m > 35) {
+            advice = "⚠️ Very hot. Carry extra water and avoid afternoon trekking.";
+        }
+        else if (weather.wind_speed_10m > 30) {
+            advice = "⚠️ Strong winds. Be careful on exposed mountain trails.";
+        }
+        else {
+            advice = "✅ Weather looks suitable for trekking.";
+        }
+
+        document.getElementById("weatherAdvice").innerText = advice;
+
     }
+    catch (error) {
 
-    document.getElementById("weatherAdvice").innerText = advice;
+        console.error(error);
+
+        document.getElementById("temperature").innerText =
+            "Weather service unavailable";
+
+        document.getElementById("windSpeed").innerText = "";
+
+        document.getElementById("humidity").innerText = "";
+
+        document.getElementById("weatherAdvice").innerText =
+            "Please try again later.";
+    }
 }
-
 async function addToFavorite() {
 
     const userEmail = localStorage.getItem("loggedInUser");
     const trekId = localStorage.getItem("selectedTrek");
 
-    const response = await fetch(`http://localhost:5000/trek/${trekId}`);
+    const response = await fetch(`http://13.235.9.206:5000/trek/${trekId}`);
     const trek = await response.json();
 
-    const favoriteResponse = await fetch("http://localhost:5000/favorite", {
+    const favoriteResponse = await fetch("http://13.235.9.206:5000/favorite", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -415,7 +505,7 @@ async function addToFavorite() {
 
     const data = await favoriteResponse.text();
 
-    alert(data);
+    showToast(data, "success");
 }
 
 async function loadFavorites() {
@@ -424,7 +514,7 @@ async function loadFavorites() {
         localStorage.getItem("loggedInUser");
 
     const response =
-        await fetch(`http://localhost:5000/favorites/${userEmail}`);
+        await fetch(`http://13.235.9.206:5000/favorites/${userEmail}`);
 
     const favorites = await response.json();
 
@@ -464,15 +554,16 @@ async function addReview() {
     const rating = document.getElementById("rating").value;
     const comment = document.getElementById("comment").value;
     if (rating < 1 || rating > 5) {
-    alert("Please enter a rating between 1 and 5");
+    showToast("Please enter a rating between 1 and 5","warning");
     return;
 }
 
-if (comment === "") {
-    alert("Please write a review comment");
+if (comment === "") 
+    {showToast("Please write a review comment","warning");
+    
     return;
 }
-    const response = await fetch("http://localhost:5000/review", {
+    const response = await fetch("http://13.235.9.206:5000/review", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -487,7 +578,7 @@ if (comment === "") {
 
     const data = await response.text();
 
-    alert(data);
+   showToast(data);
     loadReviews();
 }
 async function loadReviews() {
@@ -495,7 +586,7 @@ async function loadReviews() {
     const trekId = localStorage.getItem("selectedTrek");
 
     const response =
-        await fetch(`http://localhost:5000/reviews/${trekId}`);
+        await fetch(`http://13.235.9.206:5000/reviews/${trekId}`);
 
     const reviews = await response.json();
 
@@ -543,7 +634,7 @@ async function loadStats() {
     const userEmail = localStorage.getItem("loggedInUser");
 
     const response =
-        await fetch(`http://localhost:5000/stats/${userEmail}`);
+        await fetch(`http://13.235.9.206:5000/stats/${userEmail}`);
 
     const stats = await response.json();
 animateCounter("totalTreks", stats.totalTreks);
@@ -569,8 +660,10 @@ function animateCounter(elementId, target) {
 
     }, 80);
 }async function loadFeaturedTreks() {
+
     try {
-        const response = await fetch("http://localhost:5000/treks");
+
+        const response = await fetch(`${API_URL}/treks`);
         const treks = await response.json();
 
         const container = document.getElementById("featuredTreks");
@@ -579,27 +672,36 @@ function animateCounter(elementId, target) {
 
         container.innerHTML = "";
 
-        const defaultImage = "https://images.unsplash.com/photo-1501785888041-af3ef285b470";
+        const defaultImage =
+            "https://images.unsplash.com/photo-1501785888041-af3ef285b470";
 
         treks.slice(0, 3).forEach((trek) => {
-            container.innerHTML += `
-                <div class="trek-card" onclick="openTrek('${trek._id}')">
-                    <img src="${trek.imageUrl || defaultImage}" alt="${trek.trekName}">
 
-                    <div class="trek-card-content">
-                        <h2>${trek.trekName}</h2>
-                        <p><b>Location:</b> ${trek.location}</p>
-                        <p><b>Difficulty:</b> ${trek.difficulty}</p>
-                        <p>${trek.description ? trek.description.substring(0, 80) : "No description available"}...</p>
-                        <button class="view-btn">Explore Trek</button>
-                    </div>
-                </div>
+            container.innerHTML += `
+
+            <div class="card" onclick="openTrek('${trek._id}')">
+
+                <img src="${API_URL}/${trek.imageUrl || defaultImage}"
+                     alt="${trek.trekName}">
+
+                <h3>${trek.trekName}</h3>
+
+                <p>${trek.location}</p>
+
+            </div>
+
             `;
+
         });
 
-    } catch (error) {
-        console.log("Featured treks loading error:", error);
     }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
 }
 function checkAdminAccess() {
 
@@ -706,7 +808,7 @@ async function requestBooking() {
     const userEmail = localStorage.getItem("loggedInUser");
 
     const trekResponse =
-        await fetch(`http://localhost:5000/trek/${trekId}`);
+        await fetch(`http://13.235.9.206:5000/trek/${trekId}`);
 
     const trek = await trekResponse.json();
 
@@ -717,12 +819,12 @@ async function requestBooking() {
         document.getElementById("peopleCount").value;
 
     if (!bookingDate || !peopleCount) {
-        alert("Please fill all booking details");
+        showToast("Please fill all booking details","warning");
         return;
     }
 
     const response = await fetch(
-        "http://localhost:5000/booking",
+        "http://13.235.9.206:5000/booking",
         {
             method: "POST",
             headers: {
@@ -740,12 +842,12 @@ async function requestBooking() {
 
     const data = await response.text();
 
-    alert(data);
+   showToast(data);
 }
 async function loadBookings() {
 
     const response =
-        await fetch("http://localhost:5000/bookings");
+        await fetch("http://13.235.9.206:5000/bookings");
 
     const bookings =
         await response.json();
@@ -790,7 +892,7 @@ Reject
 async function updateBookingStatus(id, status) {
 
     const response = await fetch(
-        `http://localhost:5000/booking/${id}/status`,
+        `http://13.235.9.206:5000/booking/${id}/status`,
         {
             method: "PUT",
             headers: {
@@ -804,7 +906,7 @@ async function updateBookingStatus(id, status) {
 
     const data = await response.text();
 
-    alert(data);
+    showToast(data);
 
     loadBookings();
 }
@@ -817,7 +919,7 @@ async function loadMyBookings() {
 
     const response =
         await fetch(
-            `http://localhost:5000/my-bookings/${userEmail}`
+            `http://13.235.9.206:5000/my-bookings/${userEmail}`
         );
 
     const bookings =
@@ -865,7 +967,7 @@ async function loadProfile() {
     const username = localStorage.getItem("username") || userEmail;
 
     const response =
-        await fetch(`http://localhost:5000/profile/${userEmail}`);
+        await fetch(`http://13.235.9.206:5000/profile/${userEmail}`);
 
     const data = await response.json();
 
@@ -888,7 +990,7 @@ async function loadProfile() {
 async function loadAnalytics() {
 
     const response =
-        await fetch("http://localhost:5000/admin-analytics");
+        await fetch("http://13.235.9.206:5000/admin-analytics");
 
     const data =
         await response.json();
@@ -941,4 +1043,53 @@ if (chart) {
     }
 });
 }
+}
+
+function showToast(message,type="success"){
+
+    const toast=document.getElementById("toast");
+
+    if(!toast) return;
+
+    toast.innerHTML=message;
+
+    toast.className="";
+
+    toast.classList.add("show");
+
+    if(type==="error"){
+        toast.classList.add("error");
+    }
+
+    if(type==="warning"){
+        toast.classList.add("warning");
+    }
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer=setTimeout(()=>{
+        toast.classList.remove("show");
+    },3000);
+
+}
+
+
+function showLoader(){
+
+    const loader=document.getElementById("loader");
+
+    if(loader){
+        loader.classList.add("show");
+    }
+
+}
+
+function hideLoader(){
+
+    const loader=document.getElementById("loader");
+
+    if(loader){
+        loader.classList.remove("show");
+    }
+
 }
